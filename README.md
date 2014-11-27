@@ -33,11 +33,5 @@ that's all!<BR>
  
 ### please replace '/' with backslash in your keyboard.
  
- 
- 
- 
- 
- 
- 
- 
- 
+### if you encount the unworking of Ctrl-C (I do not know the reason why...)
+please quit cmd.exe by push "X" button.
