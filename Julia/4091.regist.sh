@@ -4,8 +4,8 @@
 const MECHAJYO_VERSION = "0.7"
 
 function setupIO()
-    stdinx::Ptr{Uint8} = 0
-    stdoutx::Ptr{Uint8} = 0
+    stdinx::Ptr{UInt8} = 0
+    stdoutx::Ptr{UInt8} = 0
     ret = ccall((:setunbuffering, "../lib/libMJ.so.1"), Int32, ())
 end
 

@@ -4,7 +4,7 @@ const MaxMoves = 2000000 # 少ないかも。。。でもこんなに読まな�
 const SENTE = 0 # ▲先手
 const GOTE  = 1 # △後手
 
-const ALPHALINE = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" }
+const ALPHALINE = ASCIIString["A", "B", "C", "D", "E", "F", "G", "H", "I", "J" ]
 
 #fi = open("table.jl","w")
 #
@@ -18,7 +18,7 @@ const ALPHALINE = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" }
 #end
 #close(fi)
 
-const MaskOfBoard = parseint(Uint128,"1ffffffffffffffffffff",16)::Uint128
+const MaskOfBoard = parse(UInt128,"1ffffffffffffffffffff",16)::UInt128
 
 const A9 = 1
 const B9 = 2
@@ -254,15 +254,15 @@ const PIECENAMES = ["  ", "P ", "L ", "N ", "S ", "G ", "B ", "R ",
 		    "K ", "+P", "+L", "+N", "+S", "  ", "+B", "+R",
 		    "  ", "p ", "l ", "n ", "s ", "g ", "b ", "r ",
 		    "k ", "+p", "+l", "+n", "+s", "  ", "+b", "+r"]::Array{ASCIIString,1}
-const usiDict = {"P"=>MJFU,"L"=>MJKY,"N"=>MJKE,"S"=>MJGI,
-                 "G"=>MJKI,"B"=>MJKA,"R"=>MJHI,
-                 "p"=>MJFU,"l"=>MJKY,"n"=>MJKE,"s"=>MJGI,
-                 "g"=>MJKI,"b"=>MJKA,"r"=>MJHI}::Dict{Any,Any}
+const usiDict = Dict{Any,Any}("P"=>MJFU,"L"=>MJKY,"N"=>MJKE,"S"=>MJGI,
+                              "G"=>MJKI,"B"=>MJKA,"R"=>MJHI,
+                              "p"=>MJFU,"l"=>MJKY,"n"=>MJKE,"s"=>MJGI,
+                              "g"=>MJKI,"b"=>MJKA,"r"=>MJHI)
 
-const num2usiDict = {MJFU=>"P",MJKY=>"L",MJKE=>"N",MJGI=>"S",
-                     MJKI=>"G",MJKA=>"B",MJHI=>"R",
-                     MJGOFU=>"P",MJGOKY=>"L",MJGOKE=>"N",MJGOGI=>"S",
-                     MJGOKI=>"G",MJGOKA=>"B",MJGOHI=>"R"}::Dict{Any,Any}
+const num2usiDict = Dict{Any,Any}(MJFU=>"P",MJKY=>"L",MJKE=>"N",MJGI=>"S",
+                                  MJKI=>"G",MJKA=>"B",MJHI=>"R",
+                                  MJGOFU=>"P",MJGOKY=>"L",MJGOKE=>"N",MJGOGI=>"S",
+                                  MJGOKI=>"G",MJGOKA=>"B",MJGOHI=>"R")
 
 const NumHand = 7
 const NumFile = 9
@@ -354,7 +354,7 @@ const MATERIAL_CAPTURE = [174,   # FU
 
 FR2IDX(file,rank) = ((9-(rank))*NumFile + ((file)))
 
-typealias BitBoard Uint128
+typealias BitBoard UInt128
 
 const BOARDINDEX = [FR2IDX(f,r) for f = 1:9, r=1:9]::Array{Int,2}
 
@@ -412,5 +412,5 @@ const kkp_rook        = 576
 const kkp_dragon      = 657
 const kkp_end         = 738
 
-const pos_n = int((fe_end) * ( fe_end + 1) / 2)
+const pos_n = Int((fe_end) * ( fe_end + 1) / 2)
 

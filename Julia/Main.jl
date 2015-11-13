@@ -16,30 +16,29 @@
 #
 
 const MECHA_JYOSHI_SHOGI = 1
-const MECHAJYO_VERSION = "1.0.2"
+const MECHAJYO_VERSION = "2.0"
 
 srand(1234)
 
-#require("Profile")
 #using IProfile
 
-require("BoardConsts.jl")
-require("Board.jl")
-require("Move.jl")
-require("GameStatus.jl")
-require("OldGenMove.jl")
-require("BitBoard.jl")
-require("fvbin.jl")
-require("Eval.jl")
-require("EvalBonanza.jl")
-require("GenMove.jl")
-require("Search.jl")
-require("PVS.jl")
+include("BoardConsts.jl")
+include("Board.jl")
+include("Move.jl")
+include("GameStatus.jl")
+include("OldGenMove.jl")
+include("BitBoard.jl")
+include("fvbin.jl")
+include("Eval.jl")
+include("EvalBonanza.jl")
+include("GenMove.jl")
+include("Search.jl")
+include("PVS.jl")
 
 # おまじない
 function setupIO()
-    stdinx::Ptr{Uint8} = 0
-    stdoutx::Ptr{Uint8} = 0
+    stdinx::Ptr{UInt8} = 0
+    stdoutx::Ptr{UInt8} = 0
     #ret = ccall((:setunbuffering, "../lib/libMJ.so.1"), Int32, ())
 
     gs = InitGS()
@@ -57,7 +56,7 @@ function producer()
     println("establish server (127.0.0.1) port: ", "4091")
 
     begin
-        server = listen(getaddrinfo("127.0.0.1"), int("4091"))
+        server = listen(getaddrinfo("127.0.0.1"), parse(UInt32,"4091"))
         while true
             println("waiting for connection...")
             sock = accept(server)
@@ -93,30 +92,30 @@ function main(sock)
         if st == "quit" || st == "exit"
             break
         elseif st == "usi"
-            println(sock,"id name Mecha Jyoshi Shogi NEW ",MECHAJYO_VERSION)
-            println(sock,"id author Sayuri TAKEBE, Mio WATANABE, Rieko TSUJI and Takeshi KIMURA")
+            println(sock,"id name Mecha Jyoshi Shogi BLACKMECHAJYO ",MECHAJYO_VERSION)
+            println(sock,"id author Sayuri TAKEBE, Mio WATANABE, Miyuki SAKAI, Rieko TSUJI and Takeshi KIMURA")
             println(sock,"option name BookFile type string default $(gs.bookfile)")
             println(sock,"option name UseBook type check default $(gs.usebook)")
             println(sock,"usiok");
         elseif st == "isready"
             srand(time_ns())
             println(sock,"readyok")
-        elseif beginswith(st,"setoption")
-            if beginswith(st,"setoption name USI_Ponder value true")
+        elseif startswith(st,"setoption")
+            if startswith(st,"setoption name USI_Ponder value true")
                 gs.canponder = true
-            elseif beginswith(st,"setoption name USI_Ponder value false")
+            elseif startswith(st,"setoption name USI_Ponder value false")
                 gs.canponder = false
-            elseif beginswith(st,"setoption name USI_Hash value ")
-                gs.hashsize = uint32(st[length("setoption name USI_Hash value "):end])
-            elseif beginswith(st,"setoption name BookFile value ")
+            elseif startswith(st,"setoption name USI_Hash value ")
+                gs.hashsize = parse(UInt32,st[length("setoption name USI_Hash value "):end])
+            elseif startswith(st,"setoption name BookFile value ")
                 gs.bookfile = st[length("setoption name BookFile value "):end]
             else
             end
-        elseif beginswith(st,"usinewgame")
+        elseif startswith(st,"usinewgame")
             # do nothing
             out = [Move(0,0,0,0,0,0) for n = 1:30000]
             history = [0 for x = 1:NumSQ, y = 1:NumSQ]
-        elseif beginswith(st,"position startpos")
+        elseif startswith(st,"position startpos")
             li = split(st)
             count = 0
             count2 = 0
@@ -174,7 +173,7 @@ function main(sock)
                 end
                 #DisplayBoard(gs.board)
             end
-        elseif beginswith(st,"position sfen")
+        elseif startswith(st,"position sfen")
             li = split(st)
             count = 0
             count2 = 0
@@ -233,11 +232,11 @@ function main(sock)
                 end
             end
             #DisplayBoard(gs.board)
-        elseif beginswith(st,"go")
+        elseif startswith(st,"go")
             li2 = split(st)
-            btime::Int = parseint(li2[3],10)
-            wtime::Int = parseint(li2[5],10)
-            byoyomi::Int = parseint(li2[7],10)
+            btime::Int = parse(Int,li2[3],10)
+            wtime::Int = parse(Int,li2[5],10)
+            byoyomi::Int = parse(Int,li2[7],10)
             #if in_check( side, gs.board)
             #    println(sock,"check!")
             #end
@@ -248,7 +247,7 @@ function main(sock)
                 println(sock,"bestmove resign")
             else
                 # chose random moves
-                #randomIndex::Int = rand(Uint32) % (count2)
+                #randomIndex::Int = rand(UInt32) % (count2)
                 Index::Int = -1
                 #m::Move = think(side,gs)
                 gs.remainTime = (side == SENTE)? btime: wtime
@@ -277,7 +276,7 @@ function main(sock)
                     #@iprofile report
                 end
             end
-        elseif beginswith(st,"gameover")
+        elseif startswith(st,"gameover")
             # do nothing
         else
             println("COMMAND NOT FOUND($st)")

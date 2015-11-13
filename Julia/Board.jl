@@ -19,8 +19,8 @@ type Board
     kingposB::Int
 
     Board() = begin # 空っぽにする
-        t = new([uint128(0) for x=1:MJGONUM]::Array{BitBoard,1},
-                uint128(0),uint128(0),uint128(0),
+        t = new([UInt128(0) for x=1:MJGONUM]::Array{BitBoard,1},
+                UInt128(0),UInt128(0),UInt128(0),
                 [0,0,0,0,0,0,0,0]::Array{Int,1},[0,0,0,0,0,0,0,0]::Array{Int,1},
                 SENTE,0.0,
                 [0 for x=1:NumSQ], false, 0, 0)
@@ -28,7 +28,7 @@ type Board
     end
 end
 
-const BitSet = [(uint128(1) << i) for i=0:80]::Array{BitBoard,1}
+const BitSet = [(UInt128(1) << i) for i=0:80]::Array{BitBoard,1}
 #const BitSetRL90 = [BitSet[RL90[sq]] for sq=A9:I1]::Array{BitBoard,1}
 #const BitSetRL45 = [BitSet[RL45[sq]] for sq=A9:I1]::Array{BitBoard,1}
 #const BitSetRR45 = [BitSet[RR45[sq]] for sq=A9:I1]::Array{BitBoard,1}
@@ -37,7 +37,7 @@ function DisplayBitBoard(bb::BitBoard,isRotate::Bool)
     boardc = Array(String,NumSQ)
 
     for sq = 1:NumSQ
-        boardc[sq] = ((bb & BitSet[sq]) != uint128(0)) ? "1": "."
+        boardc[sq] = ((bb & BitSet[sq]) != UInt128(0)) ? "1": "."
     end
 
     println("as binary integer:")
@@ -90,10 +90,10 @@ function setAttack( irank::Int, ifile::Int, bb::BitBoard )
 end
 
 function SquareInit(sq::Array{Int,1}, mochi_sente::Array{Int,1}, mochi_gote::Array{Int,1}, sengo::Int, bo::Board)
-    bo.bb = [uint128(0) for x=1:MJGONUM]::Array{BitBoard,1}
-    bo.WhitePieces = uint128(0)::BitBoard
-    bo.BlackPieces = uint128(0)::BitBoard
-    bo.OccupiedSquares = uint128(0)::BitBoard
+    bo.bb = [UInt128(0) for x=1:MJGONUM]::Array{BitBoard,1}
+    bo.WhitePieces = UInt128(0)::BitBoard
+    bo.BlackPieces = UInt128(0)::BitBoard
+    bo.OccupiedSquares = UInt128(0)::BitBoard
 
     bo.WhitePiecesInHands = mochi_sente::Array{Int,1}
     bo.BlackPiecesInHands = mochi_gote::Array{Int,1}
@@ -153,7 +153,7 @@ function SquareInit(sq::Array{Int,1}, mochi_sente::Array{Int,1}, mochi_gote::Arr
     bo
 end
 
-function InitSFEN(sfen::String, bo::Board)
+function InitSFEN(sfen::ASCIIString, bo::Board)
     rank::Int = 9
     file::Int = 1
     promote::Int = 0
@@ -171,7 +171,7 @@ function InitSFEN(sfen::String, bo::Board)
         elseif s == '+'
             promote = MJNARI
         elseif s >= '1' && s <= '9'
-            file += int(s-'0')
+            file += Int(s-'0')
         elseif s == 'P'
             sq[BOARDINDEX[file,rank]]=MJFU+promote
             file += 1
@@ -267,9 +267,9 @@ function InitSFEN(sfen::String, bo::Board)
             end
         elseif '2' <= s <= '9'
             if numberOfMochi == 1
-                numberOfMochi = 10 + int(s - '0')
+                numberOfMochi = 10 + Int(s - '0')
             else
-                numberOfMochi = int(s - '0')
+                numberOfMochi = Int(s - '0')
             end
         elseif s == 'P'
             mo_sente[MJFU] = numberOfMochi == 0 ? 1: numberOfMochi
@@ -404,7 +404,7 @@ end
 
 function BBTest()
     #InitTables()
-    bb::BitBoard = uint128(0)
+    bb::BitBoard = UInt128(0)
     #println(bb)
     bb2 = setAttack( 5, 5, bb)
     #println(bb2)
@@ -424,7 +424,7 @@ function BBTest()
     sfenHirate = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1"
     board = InitSFEN(sfenHirate, bo)
     #DisplayBoard(board)
-    #sfen = "8l/1l+R2P3/p2pBG1pp/kps1p4/Nn1P2G2/P1P1P2PP/1PS6/1KSG3+r1/LN2+p3L w Sbgn3p 124"::String
+    #sfen = "8l/1l+R2P3/p2pBG1pp/kps1p4/Nn1P2G2/P1P1P2PP/1PS6/1KSG3+r1/LN2+p3L w Sbgn3p 124"::ASCIIString
     #bo2 = Board()
     #board2 = InitSFEN(sfen, bo2)
     #DisplayBoard(board2)

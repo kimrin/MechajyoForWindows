@@ -8,12 +8,12 @@ const OUDANGOTE   = [   0,   0,  0, 10,-300,-600,-900,-1200,-1200]::Array{Int,1}
 function Eval( nextMove::Int, p::Board, gs::GameStatus)
     score::Int = 0
     i::Int = 0
-    bbp::BitBoard = uint128(0)
+    bbp::BitBoard = UInt128(0)
     from::Int = 0
 
     bbp = p.WhitePieces
     tebanP::Int = SENTE
-    while bbp > uint128(0)
+    while bbp > UInt128(0)
         from = trailing_zeros(bbp)
         bbp $= BitSet[from+1]
         q::Int = p.square[from+1]
@@ -23,7 +23,7 @@ function Eval( nextMove::Int, p::Board, gs::GameStatus)
 
     bbp = p.BlackPieces
     tebanP = GOTE
-    while bbp > uint128(0)
+    while bbp > UInt128(0)
         from = trailing_zeros(bbp)
         bbp $= BitSet[from+1]
         q::Int = p.square[from+1]

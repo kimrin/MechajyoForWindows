@@ -22,21 +22,21 @@ end
 
 # 早速immutable構文を使ってみるなど(^_^;)
 
-immutable type Move
-    move::Uint
+immutable Move
+    move::UInt
     value::Int
     Move(Piece::Int,From::Int,To::Int,Flags::Int,Capt::Int,value::Int) = new(((From&0x000000ff)<<24)|((To&0x000000ff)<<16)|((Capt&0x0000000f)<<12)|((Flags&0x00000007)<<8)|(Piece&0x0000001f),MVVLVA(Capt,Flags,Piece))
 end
 
-seeMoveFrom(m::Move)  = int((m.move & 0xff000000)>>>24)
-seeMoveTo(m::Move)    = int((m.move & 0x00ff0000)>>>16)
-seeMoveCapt(m::Move)  = int((m.move & 0x0000f000)>>>12)
-seeMoveFlag(m::Move)  = int((m.move & 0x00000f00)>>>8)
-seeMovePiece(m::Move) = int(m.move & 0x0000001f)
+seeMoveFrom(m::Move)  = Int((m.move & 0xff000000)>>>24)
+seeMoveTo(m::Move)    = Int((m.move & 0x00ff0000)>>>16)
+seeMoveCapt(m::Move)  = Int((m.move & 0x0000f000)>>>12)
+seeMoveFlag(m::Move)  = Int((m.move & 0x00000f00)>>>8)
+seeMovePiece(m::Move) = Int(m.move & 0x0000001f)
 
-const FLAG_NARI = int(0x1) # 成ったときに可能手にフラグを立てる
-const FLAG_TORI = int(0x2) # 駒を取ったときに可能手にフラグを立てる
-const FLAG_UCHI = int(0x4) # 駒を打ったときに可能手にフラグを立てる
+const FLAG_NARI = Int(0x1) # 成ったときに可能手にフラグを立てる
+const FLAG_TORI = Int(0x2) # 駒を取ったときに可能手にフラグを立てる
+const FLAG_UCHI = Int(0x4) # 駒を打ったときに可能手にフラグを立てる
 
 # あとは必要に応じて関数を追加する。先手か後手かなど
 

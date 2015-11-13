@@ -1,7 +1,7 @@
 # game status
 
-immutable type TransP
-    hs::Uint64
+immutable TransP
+    hs::UInt64
     best::Move
     depth::Float64
     flags::Int
@@ -9,10 +9,10 @@ immutable type TransP
 end
 
 type GameStatus
-    bookfile::String
+    bookfile::ASCIIString
     usebook::Bool
     canponder::Bool
-    hashsize::Uint32
+    hashsize::UInt32
     board::Board
     lastPV::Array{Move,1}
     lastPVLength::Int
@@ -43,8 +43,8 @@ type GameStatus
     SenteOthers::BitBoard
     GoteOthers::BitBoard
     MoveBeginIndex::Int
-    tt::Dict{Uint64,TransP}
-    ett::Dict{Uint64,Int64}
+    tt::Dict{UInt64,TransP}
+    ett::Dict{UInt64,Int64}
     remainTime::Int64
     maxThinkingTime::Int64
     GameStatus() = new()
@@ -55,7 +55,7 @@ function InitGS()
     gs.bookfile = "./Joseki.db"
     gs.usebook  = true
     gs.canponder= true
-    gs.hashsize = uint32(256 * 1024 * 1024)
+    gs.hashsize = UInt32(256 * 1024 * 1024)
     gs.board = Board()
     gs.lastPV = [Move(0,0,0,0,0,0) for x = 1:MaxPly]::Array{Move,1}
     gs.lastPVLength = 0
@@ -73,29 +73,29 @@ function InitGS()
     gs.allownull = true
     gs.pvmovesfound = 0
     gs.depth = 0.0
-    gs.AttackTableNonSlide = [uint128(0) for piece=MJFU:MJGORY, sq=A9:I1]::Array{BitBoard,2}
-    gs.FillRank = [uint128(0) for r=1:9]::Array{BitBoard,1}
-    gs.FillFile = [uint128(0) for f=1:9]::Array{BitBoard,1}
-    gs.fukyBitsW = uint128(0)::BitBoard
-    gs.fukyBitsB = uint128(0)::BitBoard
-    gs.keBitsW   = uint128(0)::BitBoard
-    gs.keBitsB   = uint128(0)::BitBoard
-    gs.MovableKoma = [uint128(0) uint128(0) uint128(0);
-                      uint128(0) uint128(0) uint128(0)]::Array{BitBoard,2}
-    gs.SenteJin    = uint128(0)::BitBoard
-    gs.GoteJin     = uint128(0)::BitBoard
-    gs.SenteOthers = uint128(0)::BitBoard
-    gs.GoteOthers  = uint128(0)::BitBoard
+    gs.AttackTableNonSlide = [UInt128(0) for piece=MJFU:MJGORY, sq=A9:I1]::Array{BitBoard,2}
+    gs.FillRank = [UInt128(0) for r=1:9]::Array{BitBoard,1}
+    gs.FillFile = [UInt128(0) for f=1:9]::Array{BitBoard,1}
+    gs.fukyBitsW = UInt128(0)::BitBoard
+    gs.fukyBitsB = UInt128(0)::BitBoard
+    gs.keBitsW   = UInt128(0)::BitBoard
+    gs.keBitsB   = UInt128(0)::BitBoard
+    gs.MovableKoma = [UInt128(0) UInt128(0) UInt128(0);
+                      UInt128(0) UInt128(0) UInt128(0)]::Array{BitBoard,2}
+    gs.SenteJin    = UInt128(0)::BitBoard
+    gs.GoteJin     = UInt128(0)::BitBoard
+    gs.SenteOthers = UInt128(0)::BitBoard
+    gs.GoteOthers  = UInt128(0)::BitBoard
 
     gs.MoveBeginIndex = 0
-    gs.tt = Dict{Uint64,TransP}()
-    gs.ett = Dict{Uint64,Int64}()
+    gs.tt = Dict{UInt64,TransP}()
+    gs.ett = Dict{UInt64,Int64}()
 
     gs.remainTime = 0 #rewrite by Main.jl
     gs.maxThinkingTime = MAXTHINKINGTIME
 
-    sizehint(gs.tt,65536*16)
-    sizehint(gs.ett,65536*16)
+    sizehint!(gs.tt,65536*16)
+    sizehint!(gs.ett,65536*16)
 
     #println("$gs")
     gs

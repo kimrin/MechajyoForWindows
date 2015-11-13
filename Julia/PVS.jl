@@ -6,7 +6,7 @@ const TT_ALPHA = 2
 const TT_BETA  = 3
 const TT_INVALID = -1
 
-immutable type TTKEY
+immutable TTKEY
     square::Array{Int,1} # incrementally updated, this array is usefull if we want to
     WhitePiecesInHands::Array{Int,1}
     BlackPiecesInHands::Array{Int,1}
@@ -336,9 +336,9 @@ function PVS( gs::GameStatus, ply::Int, depth::Float64, alpha::Int, beta::Int, i
             alpha = max( alpha, val)
             if alpha >= beta
                 if gs.board.nextMove == GOTE
-                    gs.blackHeuristics[seeMoveFrom(gs.moveBuf[i])+1,seeMoveTo(gs.moveBuf[i])+1] += int(depth*depth)
+                    gs.blackHeuristics[seeMoveFrom(gs.moveBuf[i])+1,seeMoveTo(gs.moveBuf[i])+1] += Int(depth*depth)
                 else
-                    gs.whiteHeuristics[seeMoveFrom(gs.moveBuf[i])+1,seeMoveTo(gs.moveBuf[i])+1] += int(depth*depth)
+                    gs.whiteHeuristics[seeMoveFrom(gs.moveBuf[i])+1,seeMoveTo(gs.moveBuf[i])+1] += Int(depth*depth)
                 end
                     
                 tt_flag = TT_BETA
@@ -352,9 +352,9 @@ function PVS( gs::GameStatus, ply::Int, depth::Float64, alpha::Int, beta::Int, i
 
     if gs.pvmovesfound > 0
         if gs.board.nextMove == GOTE
-            gs.blackHeuristics[seeMoveFrom(gs.triangularArray[ply+1,ply+1])+1,seeMoveTo(gs.triangularArray[ply+1,ply+1])+1] += int(depth*depth)
+            gs.blackHeuristics[seeMoveFrom(gs.triangularArray[ply+1,ply+1])+1,seeMoveTo(gs.triangularArray[ply+1,ply+1])+1] += Int(depth*depth)
         else
-            gs.whiteHeuristics[seeMoveFrom(gs.triangularArray[ply+1,ply+1])+1,seeMoveTo(gs.triangularArray[ply+1,ply+1])+1] += int(depth*depth)
+            gs.whiteHeuristics[seeMoveFrom(gs.triangularArray[ply+1,ply+1])+1,seeMoveTo(gs.triangularArray[ply+1,ply+1])+1] += Int(depth*depth)
         end
         tt_flag = TT_EXACT
         tt_save( depth, alpha, tt_flag, tt_bestMove, gs)

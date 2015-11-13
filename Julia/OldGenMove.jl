@@ -135,8 +135,8 @@ function CanIPromote( teban::Int, from::Int, to::Int, koma::Int)
         return flag;
     end
 
-    f_y = int(floor(from / 9))
-    t_y = int(floor(to / 9))
+    f_y = Int(floor(from / 9))
+    t_y = Int(floor(to / 9))
 
     if teban == SENTE
         if (((f_y<=8)&&(f_y>=0))&&((t_y<=2)))
@@ -157,7 +157,7 @@ function CanIPromote( teban::Int, from::Int, to::Int, koma::Int)
 end
 
 #@iprofile begin
-function recycleMove(fu_bit_array::Uint,
+function recycleMove(fu_bit_array::UInt,
 	             teban::Int,
                      koma::Int,
 	             p::Board,
@@ -173,8 +173,8 @@ function recycleMove(fu_bit_array::Uint,
     i::Int    = 0
     j::Int    = 0
     value::Int= 0
-    enable_move::Uint = 0
-    fubi = uint32(fu_bit_array)
+    enable_move::UInt = 0
+    fubi = UInt32(fu_bit_array)
     co::Int32 = count
 
     if teban == SENTE
@@ -203,14 +203,14 @@ function recycleMove(fu_bit_array::Uint,
         from = A9
         to = NumSQ # 基本どこでも打てる
     end
-    fubit::Uint32 = 0
+    fubit::UInt32 = 0
     komaval::Int = koma|(teban<<4)
 
     for i = from:to
         if koma == MJFU
             j = (i-1) % 9
             #println("fubit=",hex(fu_bit_array), ", sq=", p.square[i], ", koma=", koma)
-            fubit = uint32(1) << j
+            fubit = UInt32(1) << j
             enable_move = fubi & fubit
             #println("[",i,"][j=",j,"]: enable_move = 0x", hex(enable_move))
             if enable_move == 0
@@ -604,8 +604,8 @@ function generateMoves(p::Board,           #     /* IN:盤面 */
 
     i::Int = 0
     j::Int = 0
-    count::Int32 = int32(co)
-    fu_bit_array::Uint = 0x1ff # 歩を打てない筋に対応するbitが0になる
+    count::Int32 = Int32(co)
+    fu_bit_array::UInt = 0x1ff # 歩を打てない筋に対応するbitが0になる
     # MW_u08t *k = &(p->ban[0]);
 
     # 歩のある筋をfu_bit_arrayにセット: ２歩の検出のため
@@ -614,7 +614,7 @@ function generateMoves(p::Board,           #     /* IN:盤面 */
         val::Int = p.square[i+1]
         if val & 0x0f == MJFU
             if (val & 0x10) >>> 4 == teban
-	        fu_bit_array = fu_bit_array & uint16(~(0x0001<<j)) # jは(9-段+1): 左から何列目か
+	        fu_bit_array = fu_bit_array & UInt16(~(0x0001<<j)) # jは(9-段+1): 左から何列目か
             end
         end                  
     end
@@ -665,7 +665,7 @@ function generateQMoves(p::Board,           #     /* IN:盤面 */
 
     i::Int = 0
     j::Int = 0
-    count::Int32 = int32(co)
+    count::Int32 = Int32(co)
 
     # ここから可能手生成部
     # まず駒を動かすことで生成できる手を生成する
@@ -688,14 +688,14 @@ function SujiDanFrom(from::Int)
     elseif from == MO_MOVE_GOTE
         s1 = "駒台"
     else
-        s1 = string(SUJISTR[9- (from%9)],DANSTR[int(floor(from/9)) + 1])
+        s1 = string(SUJISTR[9- (from%9)],DANSTR[Int(floor(from/9)) + 1])
     end
     s1
 end
 
 function SujiDanTo(to::Int)
-    #println("to=",to,"suji=",9-(to%9),", dan=",int(to/9)+1)
-    s1::UTF8String = string(SUJISTR[9- (to%9)],DANSTR[int(floor(to/9)) + 1])
+    #println("to=",to,"suji=",9-(to%9),", dan=",Int(to/9)+1)
+    s1::UTF8String = string(SUJISTR[9- (to%9)],DANSTR[Int(floor(to/9)) + 1])
     s1
 end
 
@@ -721,7 +721,7 @@ function Move2String(m::Move)
         uchistr = "打ち"
     end
 
-    s::String = string(TEBANSTR[sengo+1],SujiDanTo(to),"(",SujiDanFrom(from),")",KOMASTR[piece&0x0f],captstr,naristr,uchistr)
+    s::UTF8String = string(TEBANSTR[sengo+1],SujiDanTo(to),"(",SujiDanFrom(from),")",KOMASTR[piece&0x0f],captstr,naristr,uchistr)
     s
 end
 
@@ -740,7 +740,7 @@ function makeMoveOld(q::Board,
     # seeMoveFlag(m)
     if komavalTo == MJNONE
         # そのまま置く、打ちも含む
-        q.square[to+1] = (teban << 4)|int(koma)
+        q.square[to+1] = (teban << 4)|Int(koma)
         if q.square[to+1] == MJOU
             q.kingposW = to+1
         elseif q.square[to+1] == MJGOOU
@@ -850,8 +850,8 @@ function takeBackOld(q::Board,
 end
 
 function findPosition(st::ASCIIString) # 0 origin
-    fromSuji::Int = int(st[1] - '0')
-    fromDan::Int  = int(st[2] - '`')
+    fromSuji::Int = Int(st[1] - '0')
+    fromDan::Int  = Int(st[2] - '`')
     #println("(suji,dan) = ",fromSuji, ",",fromDan)
     return (fromDan-1)*NumFile + (9-fromSuji)
     # return BOARDINDEX[fromSuji,fromDan] - 1
@@ -913,14 +913,14 @@ function findIndex(out::Array{Move,1},move::ASCIIString,sengo::Int,
 end
 
 function move2USIString(m::Move)
-    ret::String = ""
+    ret::ASCIIString = ""
     nari::Int = 0
-    capt::String = ""
-    from::String = ""
-    to::String = ""
+    capt::ASCIIString = ""
+    from::ASCIIString = ""
+    to::ASCIIString = ""
 
     if (m.move & 0x00000400) == 0x00000400 # UCHI
-        capt = num2usiDict[int(m.move & 0x1f)]
+        capt = num2usiDict[Int(m.move & 0x1f)]
         to   = USISQNAME[seeMoveTo(m)+1]
         ret = string(capt,"*",to)
     else # 普通の手
@@ -961,7 +961,7 @@ function GenMoveTest(gs::GameStatus)
     sfenHirate = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1"
     board = InitSFEN(sfenHirate, bo)
     DisplayBoard(board)
-    sfen = "8l/1l+R2P3/p2pBG1pp/kps1p4/Nn1P2G2/P1P1P2PP/1PS6/1KSG3+r1/LN2+p3L w Sbgn3p 124"::String
+    sfen = "8l/1l+R2P3/p2pBG1pp/kps1p4/Nn1P2G2/P1P1P2PP/1PS6/1KSG3+r1/LN2+p3L w Sbgn3p 124"::ASCIIString
     bo2 = Board()
     board2 = InitSFEN(sfen, bo2)
     DisplayBoard(board2)

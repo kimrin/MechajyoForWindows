@@ -232,9 +232,9 @@ function AlphaBeta( gs::GameStatus, ply::Int, depth::Float64, alpha::Int, beta::
     end
     if gs.pvmovesfound > 0
         if gs.board.nextMove == GOTE
-            gs.blackHeuristics[seeMoveFrom(gs.triangularArray[ply+1,ply+1])+1,seeMoveTo(gs.triangularArray[ply+1,ply+1])+1] += int(depth*depth)
+            gs.blackHeuristics[seeMoveFrom(gs.triangularArray[ply+1,ply+1])+1,seeMoveTo(gs.triangularArray[ply+1,ply+1])+1] += Int(depth*depth)
         else
-            gs.whiteHeuristics[seeMoveFrom(gs.triangularArray[ply+1,ply+1])+1,seeMoveTo(gs.triangularArray[ply+1,ply+1])+1] += int(depth*depth)
+            gs.whiteHeuristics[seeMoveFrom(gs.triangularArray[ply+1,ply+1])+1,seeMoveTo(gs.triangularArray[ply+1,ply+1])+1] += Int(depth*depth)
         end
         tt_flag = TT_EXACT
         tt_save( depth, alpha, tt_flag, tt_bestMove, gs)
@@ -276,8 +276,8 @@ function think( sengo::Int, gs::GameStatus)
             return gs.lastPV[1]
         end
         rememberPV(gs)
-        timeInMSecs::Int = int((time_ns() - gs.nsStart)/1000000)
-        NPS::Int = int(gs.inodes / ((time_ns() - gs.nsStart)/1000000000))
+        timeInMSecs::Int = Int(div(time_ns() - gs.nsStart),1000000)
+        NPS::Int = Int(div(gs.inodes,div((time_ns() - gs.nsStart),1000000000)))
         ## info time 203 nodes 11111111 score cp 11168 pv 5e9i+ ....
         print("info time ",timeInMSecs," depth ", int(IDdepth), " nodes ", gs.inodes, " score cp ", score, " nps ",NPS," pv")
         for i = 1:gs.triangularLength[1]
@@ -301,7 +301,7 @@ function thinkASP( sengo::Int, gs::GameStatus, sock)
     gs.timedout = false
     gs.side = sengo
     gs.board.nextMove = sengo
-    gs.tt = Dict{Uint64,TransP}()
+    gs.tt = Dict{UInt64,TransP}()
     delta::Int = 80
     score::Int = 0
     middle::Int = 0
@@ -361,10 +361,11 @@ function thinkASP( sengo::Int, gs::GameStatus, sock)
                 return gs.lastPV[1]
             end
             rememberPV(gs)
-            timeInMSecs::Int = int((time_ns() - gs.nsStart)/1000000)
-            NPS::Int = int(gs.inodes / ((time_ns() - gs.nsStart)/1000000000))
+            timeInMSecs::Int = Int(div((time_ns() - gs.nsStart),1000000))
+            frac = div((time_ns() - gs.nsStart),1000000000)
+            NPS::Int = Int(div(gs.inodes,(frac == 0)?1:frac))
             ## info time 203 nodes 11111111 score cp 11168 pv 5e9i+ ....
-            print(sock,"info time ",timeInMSecs," depth ", int(IDdepth), " nodes ", gs.inodes, " score cp ", score, " nps ",NPS," pv")
+            print(sock,"info time ",timeInMSecs," depth ", Int(IDdepth), " nodes ", gs.inodes, " score cp ", score, " nps ",NPS," pv")
             for i = 1:gs.triangularLength[1]
 	        print(sock," ",move2USIString(gs.lastPV[i]))
             end

@@ -1,22 +1,22 @@
-#PcPcOnSq(k::Int,i::Int,j::Int) = pc_on_sq[k,int((i+1)*(i)/2)+(j)] # bug
-###PcPcOnSq(k::Int,i::Int,j::Int) = pc_on_sq[int((i-1)*(i)/2)+(j-1)+1,k] # also have bugs
-PcPcOnSq(k::Int,i::Int,j::Int) = pc_on_sq[(i-1)*(i)/2+(j-1)+1,k]
+#PcPcOnSq(k::Int,i::Int,j::Int) = pc_on_sq[k,Int((i+1)*(i)/2)+(j)] # bug
+###PcPcOnSq(k::Int,i::Int,j::Int) = pc_on_sq[Int((i-1)*(i)/2)+(j-1)+1,k] # also have bugs
+PcPcOnSq(k::Int,i::Int,j::Int) = pc_on_sq[div(((i-1)*i),2)+(j-1)+1,k]
 
 function showPcPcOnSqIndex(k::Int, i::Int, j::Int)
     println("["*"$k,$i,$j"*"] = "*"pc_on_sq[",(i-1)*(i)/2+(j-1)+1,",",k,"]")
 end
 
-function probeEHash(p::Board, gs::GameStatus, key::Uint64)
+function probeEHash(p::Board, gs::GameStatus, key::UInt64)
     #key = hash(p.square) $ hash(p.WhitePiecesInHands) $ hash(p.BlackPiecesInHands) $ hash(p.nextMove)
-    contents = get( gs.ett, key, int64(0xdeadcafe))
-    if contents == int64(0xdeadcafe)
+    contents = get( gs.ett, key, Int64(0xdeadcafe))
+    if contents == Int64(0xdeadcafe)
         return false, 0
     else
         return true, contents
     end
 end
 
-function storeEHash(p::Board, gs::GameStatus, key::Uint64, value::Int64)
+function storeEHash(p::Board, gs::GameStatus, key::UInt64, value::Int64)
     gs.ett[key] = value
 end
 
@@ -61,7 +61,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     n2::Int = 1
     bb::BitBoard = p.bb[MJFU]
     #DisplayBitBoard(bb,false)
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -78,7 +78,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     # println("after MJFU: score= ",score)
 
     bb = p.bb[MJGOFU]
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -101,7 +101,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
 
     n2 = 1
     bb = p.bb[MJKY]
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -116,7 +116,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     end
     # println("after MJKY: score= ",score)
     bb = p.bb[MJGOKY]
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -136,7 +136,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
 
     n2 = 1
     bb = p.bb[MJKE]
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -150,7 +150,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     # println("after MJKE: score= ",score)
 
     bb = p.bb[MJGOKE]
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -170,7 +170,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
 
     n2 = 1
     bb = p.bb[MJGI]
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -184,7 +184,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     # println("after MJGI: score= ",score)
 
     bb = p.bb[MJGOGI]
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -202,7 +202,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     # println("after MJGOGI: score= ",score)
     n2 = 1
     bb = (p.bb[MJKI]|p.bb[MJTO]|p.bb[MJNY]|p.bb[MJNK]|p.bb[MJNG])
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -214,7 +214,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     end
     # println("after MJKI etc: score= ",score)
     bb = (p.bb[MJGOKI]|p.bb[MJGOTO]|p.bb[MJGONY]|p.bb[MJGONK]|p.bb[MJGONG])
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -232,7 +232,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     # println("after MJGOKI etc: score= ",score)
     n2 = 1
     bb = p.bb[MJKA]
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -244,7 +244,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     end
     # println("after MJKA etc: score= ",score)
     bb = p.bb[MJGOKA]
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -262,7 +262,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     # println("after MJGOKA etc: score= ",score)
     n2 = 1
     bb = p.bb[MJUM]
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -275,7 +275,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     # println("after MJUM etc: score= ",score)
 
     bb = p.bb[MJGOUM]
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -293,7 +293,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     # println("after MJGOUM etc: score= ",score)
     n2 = 1
     bb = p.bb[MJHI]
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -305,7 +305,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     end
     # println("after MJHI etc: score= ",score)
     bb = p.bb[MJGOHI]
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -323,7 +323,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     # println("after MJGOHI etc: score= ",score)
     n2 = 1
     bb = p.bb[MJRY]
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -335,7 +335,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     end
     # println("after MJRY etc: score= ",score)
     bb = p.bb[MJGORY]
-    while bb > uint128(0)
+    while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
@@ -374,10 +374,10 @@ function EvalBonanza(nextMove::Int, p::Board, gs::GameStatus)
             evalue = -evalue
         end
 
-        evalue = int64(evalue / 32)
+        evalue = Int64(div(evalue,32))
 
         noise = (rand(Int64) % 10) - 5
-        evalue += noise
+        evalue = evalue + noise
 
         return evalue
     end
@@ -446,11 +446,11 @@ function EvalBonanza(nextMove::Int, p::Board, gs::GameStatus)
             l0::Int = list0[j+1]
             l1::Int = list1[j+1]
             #try
-            sum += PcPcOnSq( sq_bk, k0, l0)
+            sum = sum + PcPcOnSq( sq_bk, k0, l0)
             #showPcPcOnSqIndex(sq_bk, k0, l0)
             # println("sq_bk=",sq_bk,",k0=",k0,",l0=",l0)
 
-            sum -= PcPcOnSq( sq_wk, k1, l1)
+            sum = sum - PcPcOnSq( sq_wk, k1, l1)
             #showPcPcOnSqIndex(sq_wk, k1, l1)
             #println("sq_wk=",sq_wk,",k1=",k1,",l1=",l1)
             #catch
@@ -464,14 +464,14 @@ function EvalBonanza(nextMove::Int, p::Board, gs::GameStatus)
         end
     end
 
-    score += sum
+    score = score + sum
     eva = Eval( SENTE, p, gs)
 
-    score += 32 * eva
+    score = score + (32 * eva)
 
     # store eHash!
     if inHash == false # always false
-        storeEHash(p, gs, key, int64(score))
+        storeEHash(p, gs, key, Int64(score))
     end
 
     # println("Eval=", eva, ", Score=", score)
@@ -480,7 +480,7 @@ function EvalBonanza(nextMove::Int, p::Board, gs::GameStatus)
         score = -score
     end
 
-    score = int(score / 32)
+    score = Int(div(score,32))
 
     noise = (rand(Int64) % 10) - 5
     score += noise
