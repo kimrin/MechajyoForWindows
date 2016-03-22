@@ -51,18 +51,24 @@ end
 #println(x...) = (for a in x; print(a); end; print("\r\n"))
 
 global sock
+global stdin
 
 function producer()
-    println("establish server (127.0.0.1) port: ", "4091")
+    if ARGS[1] == "stdio"
+        sock  = STDOUT
+        stdin = STDIN
+        ret = main(stdin,sock)
+    else
+        println("establish server (127.0.0.1) port: ", "4091")
 
-    begin
+        begin
         server = listen(getaddrinfo("127.0.0.1"), parse(UInt32,"4091"))
         while true
             println("waiting for connection...")
             sock = accept(server)
             println("establish connection!")
             while true
-                ret = main(sock)
+                ret = main(sock,sock)
                 #if ret == "quit"
                     break
                 #end
@@ -70,10 +76,11 @@ function producer()
             close(sock)
         end
         #@iprofile report
+        end
     end
 end
 
-function main(sock)
+function main(stdin, sock)
     sfenHirate = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1"
     li::Array{ASCIIString,1} = ["" for x = 1:100]::Array{ASCIIString,1}
     li2::Array{ASCIIString,1} = ["" for x = 1:100]::Array{ASCIIString,1}
@@ -86,7 +93,7 @@ function main(sock)
     #GenMoveTest(gs)
     ###t = Task(producer)
     while true
-        st = readline(sock) #consume(t)
+        st = readline(stdin) #consume(t)
         st = chomp(st)
         #println(sock,"consumed $st")
         if st == "quit" || st == "exit"
