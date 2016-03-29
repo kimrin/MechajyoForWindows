@@ -1,6 +1,8 @@
 #PcPcOnSq(k::Int,i::Int,j::Int) = pc_on_sq[k,Int((i+1)*(i)/2)+(j)] # bug
 ###PcPcOnSq(k::Int,i::Int,j::Int) = pc_on_sq[Int((i-1)*(i)/2)+(j-1)+1,k] # also have bugs
-PcPcOnSq(k::Int,i::Int,j::Int) = pc_on_sq[div(((i-1)*i),2)+(j-1)+1,k]
+#########PcPcOnSq(k::Int,i::Int,j::Int) = pc_on_sq[div(((i-1)*i),2)+(j-1)+1,k]
+# pc_on_sq[k][(i)*((i)+1)/2+(j)]
+PcPcOnSq(k::Int,i::Int,j::Int) = pc_on_sq[(div(i*(i+1),2)+j)+1,k+1]
 
 function showPcPcOnSqIndex(k::Int, i::Int, j::Int)
     println("["*"$k,$i,$j"*"] = "*"pc_on_sq[",(i-1)*(i)/2+(j-1)+1,",",k,"]")
@@ -65,8 +67,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = f_pawn + sq
-        list2[n2]    = e_pawn + ((80 - sq)+2)
+        list0[nlist] = f_pawn + sq - 1
+        list2[n2]    = e_pawn + ((80 - sq)+2) - 1
         #println("list0[",nlist,"]=",f_pawn + sq + 1)
         #println("list2[",n2,"]=",e_pawn + ((80 - sq)+2))
         score += kkp[kkp_pawn + sq,sq_bk0,sq_wk0]
@@ -82,8 +84,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = e_pawn + sq
-        list2[n2]    = f_pawn + ((80 - sq)+2)
+        list0[nlist] = e_pawn + sq - 1
+        list2[n2]    = f_pawn + ((80 - sq)+2) - 1
         # println("list0[",nlist,"]=",e_pawn + sq)
         # println("list2[",n2,"]=",f_pawn + ((80 - sq)+2))
         score -= kkp[kkp_pawn + (80 - sq)+2,sq_bk1,sq_wk1]
@@ -105,8 +107,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = f_lance + sq
-        list2[n2]    = e_lance + ((80 - sq)+2)
+        list0[nlist] = f_lance + sq - 1
+        list2[n2]    = e_lance + ((80 - sq)+2) - 1
         # println("list0[",nlist,"]=",f_lance + sq)
         # println("list2[",n2,"]=",e_lance + ((80 - sq)+2))
         score += kkp[kkp_lance + sq,sq_bk0,sq_wk0]
@@ -120,8 +122,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = e_lance + sq
-        list2[n2]    = f_lance + ((80 - sq)+2)
+        list0[nlist] = e_lance + sq - 1
+        list2[n2]    = f_lance + ((80 - sq)+2) - 1
         score -= kkp[kkp_lance + (80 - sq)+2,sq_bk1,sq_wk1]
         nlist += 1
         n2    += 1
@@ -140,8 +142,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = f_knight + sq
-        list2[n2]    = e_knight + ((80 - sq)+2)
+        list0[nlist] = f_knight + sq - 1
+        list2[n2]    = e_knight + ((80 - sq)+2) - 1
         score += kkp[kkp_knight + sq,sq_bk0,sq_wk0]
         nlist += 1
         n2    += 1
@@ -154,8 +156,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = e_knight + sq
-        list2[n2]    = f_knight + ((80 - sq)+2)
+        list0[nlist] = e_knight + sq - 1
+        list2[n2]    = f_knight + ((80 - sq)+2) - 1
         score -= kkp[kkp_knight + (80 - sq)+2,sq_bk1,sq_wk1]
         nlist += 1
         n2    += 1
@@ -174,8 +176,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = f_silver + sq
-        list2[n2]    = e_silver + ((80 - sq)+2)
+        list0[nlist] = f_silver + sq - 1
+        list2[n2]    = e_silver + ((80 - sq)+2) - 1
         score += kkp[kkp_silver + sq,sq_bk0,sq_wk0]
         nlist += 1
         n2    += 1
@@ -188,8 +190,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = e_silver + sq
-        list2[n2]    = f_silver + ((80 - sq)+2)
+        list0[nlist] = e_silver + sq - 1
+        list2[n2]    = f_silver + ((80 - sq)+2) - 1
         score -= kkp[kkp_silver + (80 - sq)+2, sq_bk1,sq_wk1]
         nlist += 1
         n2    += 1
@@ -206,8 +208,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = f_gold + sq
-        list2[n2]    = e_gold + ((80 - sq)+2)
+        list0[nlist] = f_gold + sq - 1
+        list2[n2]    = e_gold + ((80 - sq)+2) - 1
         score += kkp[kkp_gold + sq,sq_bk0,sq_wk0]
         nlist += 1
         n2    += 1
@@ -218,8 +220,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = e_gold + sq
-        list2[n2]    = f_gold + ((80 - sq)+2)
+        list0[nlist] = e_gold + sq - 1
+        list2[n2]    = f_gold + ((80 - sq)+2) - 1
         score -= kkp[kkp_gold + (80 - sq)+2,sq_bk1,sq_wk1]
         nlist += 1
         n2    += 1
@@ -236,8 +238,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = f_bishop + sq
-        list2[n2]    = e_bishop + ((80 - sq)+2)
+        list0[nlist] = f_bishop + sq - 1
+        list2[n2]    = e_bishop + ((80 - sq)+2) - 1
         score += kkp[kkp_bishop + sq,sq_bk0,sq_wk0]
         nlist += 1
         n2    += 1
@@ -248,8 +250,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = e_bishop + sq
-        list2[n2]    = f_bishop + ((80 - sq)+2)
+        list0[nlist] = e_bishop + sq - 1
+        list2[n2]    = f_bishop + ((80 - sq)+2) - 1
         score -= kkp[kkp_bishop + (80 - sq)+2,sq_bk1,sq_wk1]
         nlist += 1
         n2    += 1
@@ -266,8 +268,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = f_horse + sq
-        list2[n2]    = e_horse + ((80 - sq)+2)
+        list0[nlist] = f_horse + sq - 1
+        list2[n2]    = e_horse + ((80 - sq)+2) - 1
         score += kkp[kkp_horse + sq,sq_bk0,sq_wk0]
         nlist += 1
         n2    += 1
@@ -279,8 +281,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = e_horse + sq
-        list2[n2]    = f_horse + ((80 - sq)+2)
+        list0[nlist] = e_horse + sq - 1
+        list2[n2]    = f_horse + ((80 - sq)+2) - 1
         score -= kkp[kkp_horse + (80 - sq)+2,sq_bk1,sq_wk1]
         nlist += 1
         n2    += 1
@@ -297,8 +299,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = f_rook + sq
-        list2[n2]    = e_rook + ((80 - sq)+2)
+        list0[nlist] = f_rook + sq - 1
+        list2[n2]    = e_rook + ((80 - sq)+2) - 1
         score += kkp[kkp_rook + sq,sq_bk0,sq_wk0]
         nlist += 1
         n2    += 1
@@ -309,8 +311,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = e_rook + sq
-        list2[n2]    = f_rook + ((80 - sq)+2)
+        list0[nlist] = e_rook + sq - 1
+        list2[n2]    = f_rook + ((80 - sq)+2) - 1
         score -= kkp[kkp_rook + (80 - sq)+2,sq_bk1,sq_wk1]
         nlist += 1
         n2    += 1
@@ -327,8 +329,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = f_dragon + sq
-        list2[n2]    = e_dragon + ((80 - sq)+2)
+        list0[nlist] = f_dragon + sq - 1
+        list2[n2]    = e_dragon + ((80 - sq)+2) - 1
         score += kkp[kkp_dragon + sq,sq_bk0,sq_wk0]
         nlist += 1
         n2    += 1
@@ -339,8 +341,8 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
         bb $= BitSet[sq]
-        list0[nlist] = e_dragon + sq
-        list2[n2]    = f_dragon + ((80 - sq)+2)
+        list0[nlist] = e_dragon + sq - 1
+        list2[n2]    = f_dragon + ((80 - sq)+2) - 1
         score -= kkp[kkp_dragon + (80 - sq)+2,sq_bk1,sq_wk1]
         nlist += 1
         n2    += 1
@@ -354,7 +356,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     if nlist > 53
         println("nlist is larger than 53.")
     end
-    # println("makelist score =", score)
+    #println("makelist score =", score)
     return nlist-1, score
 end
 
@@ -381,47 +383,49 @@ function EvalBonanza(nextMove::Int, p::Board, gs::GameStatus)
 
         return evalue
     end
-    
-    list0[ 1] = f_hand_pawn   + p.BlackPiecesInHands[MJFU] + 1
-    list0[ 2] = e_hand_pawn   + p.WhitePiecesInHands[MJFU] + 1
-    list0[ 3] = f_hand_lance  + p.BlackPiecesInHands[MJKY] + 1
-    list0[ 4] = e_hand_lance  + p.WhitePiecesInHands[MJKY] + 1
-    list0[ 5] = f_hand_knight + p.BlackPiecesInHands[MJKE] + 1
-    list0[ 6] = e_hand_knight + p.WhitePiecesInHands[MJKE] + 1
-    list0[ 7] = f_hand_silver + p.BlackPiecesInHands[MJGI] + 1
-    list0[ 8] = e_hand_silver + p.WhitePiecesInHands[MJGI] + 1
-    list0[ 9] = f_hand_gold   + p.BlackPiecesInHands[MJKI] + 1
-    list0[10] = e_hand_gold   + p.WhitePiecesInHands[MJKI] + 1
-    list0[11] = f_hand_bishop + p.BlackPiecesInHands[MJKA] + 1
-    list0[12] = e_hand_bishop + p.WhitePiecesInHands[MJKA] + 1
-    list0[13] = f_hand_rook   + p.BlackPiecesInHands[MJHI] + 1
-    list0[14] = e_hand_rook   + p.WhitePiecesInHands[MJHI] + 1
+    #println("list0[1] = ", f_hand_pawn, "+",p.WhitePiecesInHands[MJFU])
+    list0[ 1] = f_hand_pawn   + p.WhitePiecesInHands[MJFU]
+    #println("list0[2] = ", e_hand_pawn, "+",p.BlackPiecesInHands[MJFU])
+    list0[ 2] = e_hand_pawn   + p.BlackPiecesInHands[MJFU]
 
-    list1[ 1] = f_hand_pawn   + p.WhitePiecesInHands[MJFU] + 1
-    list1[ 2] = e_hand_pawn   + p.BlackPiecesInHands[MJFU] + 1
-    list1[ 3] = f_hand_lance  + p.WhitePiecesInHands[MJKY] + 1
-    list1[ 4] = e_hand_lance  + p.BlackPiecesInHands[MJKY] + 1
-    list1[ 5] = f_hand_knight + p.WhitePiecesInHands[MJKE] + 1
-    list1[ 6] = e_hand_knight + p.BlackPiecesInHands[MJKE] + 1
-    list1[ 7] = f_hand_silver + p.WhitePiecesInHands[MJGI] + 1
-    list1[ 8] = e_hand_silver + p.BlackPiecesInHands[MJGI] + 1
-    list1[ 9] = f_hand_gold   + p.WhitePiecesInHands[MJKI] + 1
-    list1[10] = e_hand_gold   + p.BlackPiecesInHands[MJKI] + 1
-    list1[11] = f_hand_bishop + p.WhitePiecesInHands[MJKA] + 1
-    list1[12] = e_hand_bishop + p.BlackPiecesInHands[MJKA] + 1
-    list1[13] = f_hand_rook   + p.WhitePiecesInHands[MJHI] + 1
-    list1[14] = e_hand_rook   + p.BlackPiecesInHands[MJHI] + 1
+    list0[ 3] = f_hand_lance  + p.WhitePiecesInHands[MJKY]
+    list0[ 4] = e_hand_lance  + p.BlackPiecesInHands[MJKY]
+    list0[ 5] = f_hand_knight + p.WhitePiecesInHands[MJKE]
+    list0[ 6] = e_hand_knight + p.BlackPiecesInHands[MJKE]
+    list0[ 7] = f_hand_silver + p.WhitePiecesInHands[MJGI]
+    list0[ 8] = e_hand_silver + p.BlackPiecesInHands[MJGI]
+    list0[ 9] = f_hand_gold   + p.WhitePiecesInHands[MJKI]
+    list0[10] = e_hand_gold   + p.BlackPiecesInHands[MJKI]
+    list0[11] = f_hand_bishop + p.WhitePiecesInHands[MJKA]
+    list0[12] = e_hand_bishop + p.BlackPiecesInHands[MJKA]
+    list0[13] = f_hand_rook   + p.WhitePiecesInHands[MJHI]
+    list0[14] = e_hand_rook   + p.BlackPiecesInHands[MJHI]
+
+    list1[ 1] = f_hand_pawn   + p.BlackPiecesInHands[MJFU]
+    list1[ 2] = e_hand_pawn   + p.WhitePiecesInHands[MJFU]
+    list1[ 3] = f_hand_lance  + p.BlackPiecesInHands[MJKY]
+    list1[ 4] = e_hand_lance  + p.WhitePiecesInHands[MJKY]
+    list1[ 5] = f_hand_knight + p.BlackPiecesInHands[MJKE]
+    list1[ 6] = e_hand_knight + p.WhitePiecesInHands[MJKE]
+    list1[ 7] = f_hand_silver + p.BlackPiecesInHands[MJGI]
+    list1[ 8] = e_hand_silver + p.WhitePiecesInHands[MJGI]
+    list1[ 9] = f_hand_gold   + p.BlackPiecesInHands[MJKI]
+    list1[10] = e_hand_gold   + p.WhitePiecesInHands[MJKI]
+    list1[11] = f_hand_bishop + p.BlackPiecesInHands[MJKA]
+    list1[12] = e_hand_bishop + p.WhitePiecesInHands[MJKA]
+    list1[13] = f_hand_rook   + p.BlackPiecesInHands[MJHI]
+    list1[14] = e_hand_rook   + p.WhitePiecesInHands[MJHI]
 
     nlist::Int = 0
     score::Int = 0
 
     nlist, score = make_list( list0, list1, p, gs)
-    # for i = 1:nlist
-    #     println("list0[",i,"] = ", list0[i])
-    # end
-    # for i = 1:nlist
-    #     println("list1[",i,"] = ", list1[i])
-    # end
+    #for i = 1:nlist
+    #    println("list0[",i-1,"] = ", list0[i])
+    #end
+    #for i = 1:nlist
+    #    println("list1[",i-1,"] = ", list1[i])
+    #end
 
     #for i = 1:nlist
     #    if list0[i] >= fe_end
@@ -431,8 +435,8 @@ function EvalBonanza(nextMove::Int, p::Board, gs::GameStatus)
     #        println("list1[",i,"]=",list1[i])
     #    end
     #end
-    sq_bk::Int = p.kingposW
-    sq_wk::Int = 82 - p.kingposB
+    sq_bk::Int = p.kingposW - 1
+    sq_wk::Int = 82 - p.kingposB - 1
     #println("sq_bk=$(sq_bk), sq_wk = $(sq_wk)")
     #println("p.kingposW = $(p.kingposW), p.kingposB = $(p.kingposB)")
     sum::Int = 0
@@ -440,7 +444,7 @@ function EvalBonanza(nextMove::Int, p::Board, gs::GameStatus)
     for i = 0:(nlist-1)
         k0::Int = list0[i+1]
         k1::Int = list1[i+1]
-        
+
         for j = 0:(i)
             #println("(i,j)=($i,$j)")
             l0::Int = list0[j+1]
@@ -448,7 +452,7 @@ function EvalBonanza(nextMove::Int, p::Board, gs::GameStatus)
             #try
             sum = sum + PcPcOnSq( sq_bk, k0, l0)
             #showPcPcOnSqIndex(sq_bk, k0, l0)
-            # println("sq_bk=",sq_bk,",k0=",k0,",l0=",l0)
+            #println("sq_bk=",sq_bk,",k0=",k0,",l0=",l0)
 
             sum = sum - PcPcOnSq( sq_wk, k1, l1)
             #showPcPcOnSqIndex(sq_wk, k1, l1)
@@ -466,7 +470,8 @@ function EvalBonanza(nextMove::Int, p::Board, gs::GameStatus)
 
     score = score + sum
     eva = Eval( SENTE, p, gs)
-
+    #println("MATERIAL(J) = ", eva)
+    #println("sum(J) = ", sum)
     score = score + (32 * eva)
 
     # store eHash!
@@ -482,8 +487,8 @@ function EvalBonanza(nextMove::Int, p::Board, gs::GameStatus)
 
     score = Int(div(score,32))
 
-    noise = (rand(Int64) % 10) - 5
-    score += noise
+    #noise = (rand(Int64) % 10) - 5
+    #score += noise
 
     #println("XXX")
     #DisplayBoard(p)
