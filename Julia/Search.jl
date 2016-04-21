@@ -2,10 +2,10 @@
 ## info time 203 nodes 11111111 score cp 11168 pv 5e9i+ ....
 
 function rememberPV(gs::GameStatus)
-    # remember the last PV, and also the 5 previous ones because 
+    # remember the last PV, and also the 5 previous ones because
     # they usually contain good moves to try
     i::Int = 0
-    
+
     gs.lastPVLength = gs.triangularLength[1]
     #println("last length = ", gs.triangularLength[1])
     for i = 1:gs.triangularLength[1]
@@ -263,7 +263,7 @@ function think( sengo::Int, gs::GameStatus)
 
     for IDdepth = 1.0:1.0:15.0 #MaxPly
         gs.moveBufLen = [0 for x = 1:MaxPly]::Array{Int,1}
-        gs.moveBuf = [Move(0,0,0,0,0,0) for x = 1:MaxMoves]        
+        gs.moveBuf = [Move(0,0,0,0,0,0) for x = 1:MaxMoves]
         gs.triangularLength = [0 for x = 1:MaxPly]::Array{Int,1}
         gs.triangularArray  = [Move(0,0,0,0,0,0) for x = 1:MaxPly, y = 1:MaxPly]::Array{Move,2}
         gs.followpv = true
@@ -307,70 +307,66 @@ function thinkASP( sengo::Int, gs::GameStatus, sock)
     middle::Int = 0
     smallAlpha::Int = 0
     smallBeta::Int  = 0
+    oldev = Int64(0)
     for IDdepth = 1.0:1.0:30.0 #MaxPly
         hitScore::Bool = false
 
-        while hitScore == false
-            gs.moveBufLen = [0 for x = 1:MaxPly]::Array{Int,1}
-            gs.moveBuf = [Move(0,0,0,0,0,0) for x = 1:MaxMoves]        
-            gs.triangularLength = [0 for x = 1:MaxPly]::Array{Int,1}
-            gs.triangularArray  = [Move(0,0,0,0,0,0) for x = 1:MaxPly, y = 1:MaxPly]::Array{Move,2}
-            gs.followpv = true
-            gs.allownull = true
-            gs.MoveBeginIndex = 0
+        gs.moveBufLen = [0 for x = 1:MaxPly]::Array{Int,1}
+        gs.moveBuf = [Move(0,0,0,0,0,0) for x = 1:MaxMoves]
+        gs.triangularLength = [0 for x = 1:MaxPly]::Array{Int,1}
+        gs.triangularArray  = [Move(0,0,0,0,0,0) for x = 1:MaxPly, y = 1:MaxPly]::Array{Move,2}
+        gs.followpv = true
+        gs.allownull = true
+        gs.MoveBeginIndex = 0
 
-            # score::Int = AlphaBeta(gs, 0, IDdepth,-Infinity,Infinity) # ply=0
-            if IDdepth == 1.0
-                #score = PVS(gs, 0, IDdepth,-Infinity,Infinity,true) # ply=0
-                score = AlphaBeta(gs, 0, IDdepth,-Infinity,Infinity) # ply=0
-                middle = score
-                hitScore = true
-                smallAlpha = middle - delta
-                smallBeta  = middle + delta
-            else
+        # score::Int = AlphaBeta(gs, 0, IDdepth,-Infinity,Infinity) # ply=0
+        if IDdepth == 1.0
+            #score = PVS(gs, 0, IDdepth,-Infinity,Infinity,true) # ply=0
+            score = AlphaBeta(gs, 0, IDdepth,-Infinity,Infinity) # ply=0
+            oldev = score
+        else
+            delta = Int64(100)
+            alpha = Int64(oldev-delta)
+            beta  = Int64(oldev+delta)
+            inWindow = false
+            while inWindow == false
                 #score = PVS(gs, 0, IDdepth,smallAlpha,smallBeta,true) # ply=0
-                score = AlphaBeta(gs, 0, IDdepth,smallAlpha,smallBeta) # ply=0
-                middle = score
-
-                if smallAlpha == -Infinity
-                    hitScore = true
-                end
-                if smallBeta  == Infinity
-                    hitScore = true
-                end
-
-                if smallAlpha < score < smallBeta
-                    hitScore = true
-                elseif score <= smallAlpha
-                    delta *= 2
-                    smallAlpha = middle - delta
-                    if delta >= 2000
-                        smallAlpha = -Infinity
+                println("debug depth: ", IDdepth, ", alpha = ", alpha, ", beta = ", beta)
+                score = AlphaBeta(gs, 0, IDdepth,alpha,beta) # ply=0
+                if alpha >= score
+                    delta = Int64(delta) * 2
+                    beta  = Int64(alpha+1)
+                    alpha = Int64(alpha-1-(delta*2))
+                    if alpha < -30000
+                        alpha = Int64(-32768)
                     end
-                elseif score >= smallBeta
-                    delta *= 2
-                    smallBeta = middle + delta
-                    if delta >= 2000
-                        smallBeta = Infinity
+                elseif beta <= score
+                    delta = Int64(delta) * 2
+                    alpha = Int64(beta-1)
+                    beta  = Int64(beta+1+(delta*2))
+                    if beta > 30000
+                        beta = Int64(32767)
                     end
+                elseif (alpha <= score)&&(score <= beta)
+                    inWindow = true
                 end
+                oldev = score
             end
-
-            # println("Depth = ", IDdepth, ", Score = ", score)
-            if gs.timedout
-                return gs.lastPV[1]
-            end
-            rememberPV(gs)
-            timeInMSecs::Int = Int(div((time_ns() - gs.nsStart),1000000))
-            frac = div((time_ns() - gs.nsStart),1000000000)
-            NPS::Int = Int(div(gs.inodes,(frac == 0)?1:frac))
-            ## info time 203 nodes 11111111 score cp 11168 pv 5e9i+ ....
-            print(sock,"info time ",timeInMSecs," depth ", Int(IDdepth), " nodes ", gs.inodes, " score cp ", score, " nps ",NPS," pv")
-            for i = 1:gs.triangularLength[1]
-	        print(sock," ",move2USIString(gs.lastPV[i]))
-            end
-            println(sock)
         end
+        # println("Depth = ", IDdepth, ", Score = ", score)
+        if gs.timedout
+            return gs.lastPV[1]
+        end
+        rememberPV(gs)
+        timeInMSecs::Int = Int(div((time_ns() - gs.nsStart),1000000))
+        frac = div((time_ns() - gs.nsStart),1000000000)
+        NPS::Int = Int(div(gs.inodes,(frac == 0)?1:frac))
+        ## info time 203 nodes 11111111 score cp 11168 pv 5e9i+ ....
+        print(sock,"info time ",timeInMSecs," depth ", Int(IDdepth), " nodes ", gs.inodes, " score cp ", score, " nps ",NPS," pv")
+        for i = 1:gs.triangularLength[1]
+            print(sock," ",move2USIString(gs.lastPV[i]))
+        end
+        println(sock)
     end
 
     move = gs.lastPV[1]

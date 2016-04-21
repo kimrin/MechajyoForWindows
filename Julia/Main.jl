@@ -1,22 +1,28 @@
 #!/usr/local/bin/julia
-# 
+#
 # メカ女子将棋システム (C) 2013 メカ女子将棋部☆
-# 
+#
 # メカ女子将棋部：
-# 
+#
 # 竹部　さゆり（女流三段）様
 #   メカさゆりん
 # 渡辺　弥生（女流一級）様
 #   メカみおたん
+# 酒井　美由紀（裁縫顧問）様
+# 　メカみゅーん
 # T.R.　（女子大学院生）様
 #   メカりえぽん
 # 木村　健（メカウーサーメカ担当、実装責任者）
 #   メカきむりん、プロジェクトリーダー、小五女子w
-# 
+#
 #
 
 const MECHA_JYOSHI_SHOGI = 1
-const MECHAJYO_VERSION = "2.0"
+const MECHAJYO_VERSION = "BlackMechajyo 4.0"
+
+const THINK_TIME_IN_NS = UInt64(1000000000*10)
+const THINK_BYOYOMI_IN_NS = UInt64(1000000000*8)
+const BEGIN_BYOYOMI_IN_NS = UInt64(1000000000*60)
 
 srand(1234)
 
@@ -50,34 +56,32 @@ end
 
 #println(x...) = (for a in x; print(a); end; print("\r\n"))
 
-global sock
-global stdin
-
 function producer()
+  if length(ARGS) == 1
     if ARGS[1] == "stdio"
-        sock  = STDOUT
-        stdin = STDIN
-        ret = main(stdin,sock)
-    else
-        println("establish server (127.0.0.1) port: ", "4091")
-
-        begin
-        server = listen(getaddrinfo("127.0.0.1"), parse(UInt32,"4091"))
-        while true
-            println("waiting for connection...")
-            sock = accept(server)
-            println("establish connection!")
-            while true
-                ret = main(sock,sock)
-                #if ret == "quit"
-                    break
-                #end
-            end
-            close(sock)
-        end
-        #@iprofile report
-        end
+      sock  = STDOUT
+      stdin = STDIN
+      ret = main(stdin,sock)
     end
+  end
+  if (length(ARGS) == 2) && (ARGS[1] == "tcp")
+    addr = ARGS[2]
+    println("establish server (", addr, ") port: ", "4091")
+    begin
+      #server = listen(getaddrinfo("127.0.0.1"), parse(UInt32,"4091"))
+      server = listen(getaddrinfo(addr), parse(UInt32,"4091"))
+      while true
+        println("waiting for connection...")
+        sock  = accept(server)
+        println("establish connection!")
+        while true
+          ret = main(sock,sock)
+          break
+        end
+        close(sock)
+      end
+    end
+  end
 end
 
 function main(stdin, sock)
@@ -99,7 +103,7 @@ function main(stdin, sock)
         if st == "quit" || st == "exit"
             break
         elseif st == "usi"
-            println(sock,"id name Mecha Jyoshi Shogi BLACKMECHAJYO ",MECHAJYO_VERSION)
+            println(sock,"id name Mecha Jyoshi Shogi ",MECHAJYO_VERSION)
             println(sock,"id author Sayuri TAKEBE, Mio WATANABE, Miyuki SAKAI, Rieko TSUJI and Takeshi KIMURA")
             println(sock,"option name BookFile type string default $(gs.bookfile)")
             println(sock,"option name UseBook type check default $(gs.usebook)")
@@ -175,7 +179,7 @@ function main(stdin, sock)
                                 #println(sock,"move=",move2USIString(out[idx]))
                             end
                         end
-                        
+
                     end
                 end
                 #DisplayBoard(gs.board)
@@ -197,7 +201,7 @@ function main(stdin, sock)
                     end
                     gs.board = InitSFEN(sfen, gs.board)
                     count = 0
-                    
+
                     for x = 8:size(li,1)
                         count = 0
                         if iseven(x) # 先手
@@ -241,56 +245,109 @@ function main(stdin, sock)
             #DisplayBoard(gs.board)
         elseif startswith(st,"go")
             li2 = split(st)
-            btime::Int = parse(Int,li2[3],10)
-            wtime::Int = parse(Int,li2[5],10)
-            byoyomi::Int = parse(Int,li2[7],10)
-            #if in_check( side, gs.board)
-            #    println(sock,"check!")
-            #end
+            start, goal, isByoyomi, thinkTime = parseGo(li2,side)
             count2 = generateMoves(gs.board, out, side, 0, gs)
             count3 = generateBB(gs.board, out, side, 0, gs)
-
             if count2 == 0
-                println(sock,"bestmove resign")
+              println(sock,"bestmove resign")
             else
-                # chose random moves
-                #randomIndex::Int = rand(UInt32) % (count2)
-                Index::Int = -1
-                #m::Move = think(side,gs)
-                gs.remainTime = (side == SENTE)? btime: wtime
-                if gs.remainTime < 60000
-                     gs.maxThinkingTime = (1000000000*8)
-                else
-                     gs.maxThinkingTime = MAXTHINKINGTIME
+              # chose random moves
+              #randomIndex::Int = rand(UInt32) % (count2)
+              Index::Int = -1
+              #m::Move = think(side,gs)
+              gs.maxThinkingTime = thinkTime
+              m::Move = thinkASP(side,gs,sock)
+              #println(sock,"move=",m)
+              for q = 1:count2
+                if out[q].move == m.move
+                  Index = q
+                  break
                 end
-                println("btime=",btime,", wtime=", wtime, ", remainTime = ",gs.remainTime)
-                m::Move = thinkASP(side,gs,sock)
-                #println(sock,"move=",m)
-                for q = 1:count2
-                    if out[q].move == m.move
-                        Index = q
-                        break
-                    end
+              end
+              if Index == -1
+                println(sock,"bestmove resign")
+              else
+                makeMove(gs.board,Index,out,side)
+                if in_check( side, gs.board)
+                  # println("check!")
                 end
-                if Index == -1
-                    println(sock,"bestmove resign")
-                else
-                    makeMove(gs.board,Index,out,side)
-                    if in_check( side, gs.board)
-                        println("check!")
-                    end
-                    println(sock,"bestmove ",move2USIString(out[Index]))
-                    #@iprofile report
-                end
+                println(sock,"bestmove ",move2USIString(out[Index]))
+              end
             end
         elseif startswith(st,"gameover")
             # do nothing
         else
-            println("COMMAND NOT FOUND($st)")
+            println("debug COMMAND NOT FOUND($st)")
         end
         #println(sock,"COMMAND: $st")
     end
     return "quit"
+end
+
+function parseGo(list,side)
+  i = 1
+  btime = 0
+  wtime = 0
+  byoyomi = 0
+  winc = 0
+  binc = 0
+  for x in list
+    if btime == -1
+      btime = parse(UInt64,x*"000000")
+    end
+    if wtime == -1
+      wtime = parse(UInt64,x*"000000")
+    end
+    if byoyomi == -1
+      byoyomi = parse(UInt64,x*"000000")
+    end
+    if winc == -1
+      winc = parse(UInt64,x*"000000")
+    end
+    if binc == -1
+      binc = parse(UInt64,x*"000000")
+    end
+
+    if x == "btime"
+      btime = -1
+    elseif x == "wtime"
+      wtime = -1
+    elseif x == "byoyomi"
+      byoyomi = -1
+    elseif x == "winc"
+      winc = -1
+    elseif x == "binc"
+      binc = -1
+    end
+    i = i + 1
+  end
+
+  isByoyomi = (side == SENTE) ? (btime < BEGIN_BYOYOMI_IN_NS):  (wtime < BEGIN_BYOYOMI_IN_NS)
+
+  remainTime = (side == SENTE)? btime: wtime
+
+  println("remain time = ", remainTime)
+
+  minByoyomi = 2 # 2 secs
+  thinkTime = 10
+  if isByoyomi
+    if (winc > 0)&&(binc > 0) # fisher rule
+      thinkTime = Int64(remainTime * 0.8)
+    else
+      if byoyomi < Int64(1000000000 * minByoyomi)
+        thinkTime = Int64(UInt64(byoyomi >>> 1))
+      else
+        thinkTime = byoyomi - Int64(1000000000 * minByoyomi)
+      end
+    end
+  else
+    thinkTime = THINK_TIME_IN_NS
+  end
+  start = time_ns() # sampling time value
+  goal = start + thinkTime
+  tObj = (start,goal,isByoyomi,thinkTime)
+  println(tObj)
+  return tObj
 end
 
 producer()
