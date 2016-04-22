@@ -323,7 +323,7 @@ function thinkASP( sengo::Int, gs::GameStatus, sock)
         if IDdepth == 1.0
             #score = PVS(gs, 0, IDdepth,-Infinity,Infinity,true) # ply=0
             score = AlphaBeta(gs, 0, IDdepth,-Infinity,Infinity) # ply=0
-            oldev = score
+            oldev = Int64(score)
         else
             delta = Int64(100)
             alpha = Int64(oldev-delta)
@@ -331,14 +331,16 @@ function thinkASP( sengo::Int, gs::GameStatus, sock)
             inWindow = false
             while inWindow == false
                 #score = PVS(gs, 0, IDdepth,smallAlpha,smallBeta,true) # ply=0
-                println("debug depth: ", IDdepth, ", alpha = ", alpha, ", beta = ", beta)
+
                 score = AlphaBeta(gs, 0, IDdepth,alpha,beta) # ply=0
+                println("debug depth: ", IDdepth, ", alpha = ", alpha, ", beta = ", beta,", score = ", score)
                 if alpha >= score
                     delta = Int64(delta) * 2
                     beta  = Int64(alpha+1)
                     alpha = Int64(alpha-1-(delta*2))
                     if alpha < -30000
                         alpha = Int64(-32768)
+                        beta  = Int64(32767)
                     end
                 elseif beta <= score
                     delta = Int64(delta) * 2
@@ -346,6 +348,7 @@ function thinkASP( sengo::Int, gs::GameStatus, sock)
                     beta  = Int64(beta+1+(delta*2))
                     if beta > 30000
                         beta = Int64(32767)
+                        alpha = Int64(-32768)
                     end
                 elseif (alpha <= score)&&(score <= beta)
                     inWindow = true

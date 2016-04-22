@@ -18,9 +18,9 @@
 #
 
 const MECHA_JYOSHI_SHOGI = 1
-const MECHAJYO_VERSION = "BlackMechajyo 4.0"
+const MECHAJYO_VERSION = "BlackMechajyo"
 
-const THINK_TIME_IN_NS = UInt64(1000000000*10)
+const THINK_TIME_IN_NS = UInt64(1000000000*14)
 const THINK_BYOYOMI_IN_NS = UInt64(1000000000*8)
 const BEGIN_BYOYOMI_IN_NS = UInt64(1000000000*60)
 
@@ -79,6 +79,7 @@ function producer()
           break
         end
         close(sock)
+        break
       end
     end
   end
