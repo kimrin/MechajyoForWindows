@@ -1,0 +1,6 @@
+usi
+isready
+usinewgame
+position startpos
+go btime 100000 wtime 100000 winc 10000 binc 10000
+quit
