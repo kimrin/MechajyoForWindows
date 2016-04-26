@@ -183,8 +183,8 @@ function main(stdin, sock)
 
                     end
                 end
-                #DisplayBoard(gs.board)
             end
+            DisplayBoard(gs.board)
         elseif startswith(st,"position sfen")
             li = split(st)
             count = 0
@@ -243,7 +243,7 @@ function main(stdin, sock)
                     end
                 end
             end
-            #DisplayBoard(gs.board)
+            DisplayBoard(gs.board)
         elseif startswith(st,"go")
             li2 = split(st)
             start, goal, isByoyomi, thinkTime = parseGo(li2,side)
@@ -273,6 +273,7 @@ function main(stdin, sock)
                   # println("check!")
                 end
                 println(sock,"bestmove ",move2USIString(out[Index]))
+                DisplayBoard(gs.board)
               end
             end
         elseif startswith(st,"gameover")

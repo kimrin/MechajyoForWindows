@@ -310,7 +310,7 @@ function InitSFEN(sfen::ASCIIString, bo::Board)
         elseif s == 's'
             mo_gote[MJGI] = numberOfMochi == 0 ? 1: numberOfMochi
             numberOfMochi = 0
-        elseif s == 'g' 
+        elseif s == 'g'
             mo_gote[MJKI] = numberOfMochi == 0 ? 1: numberOfMochi
             numberOfMochi = 0
         elseif s == 'b'
@@ -333,7 +333,8 @@ function DisplayMochiGoma( bo::Board, sengo::Int)
     senteNum::Int = 0
     goteNum::Int = 0
     if sengo == SENTE
-        print("\e[34m", TEBANSTR[1], "\e[30m 持駒　")
+        print(TEBANSTR[1]," 持駒　")
+        #print("\e[36m", TEBANSTR[1], "\e[37m 持駒　")
         for i = MJOU:-1:MJFU
             mochi = bo.WhitePiecesInHands[i]
             if mochi > 0
@@ -341,7 +342,7 @@ function DisplayMochiGoma( bo::Board, sengo::Int)
 
                 print(MOCHISTR[i])
                 if mochi > 1
-                    print(mochi)
+                    print("$mochi")
                 end
             end
         end
@@ -350,20 +351,21 @@ function DisplayMochiGoma( bo::Board, sengo::Int)
         end
         println()
     elseif sengo == GOTE
-        print(TEBANSTR[2], " 持駒　")
+        print_with_color(:cyan, TEBANSTR[2], " 持駒　")
+        #print(TEBANSTR[2], " 持駒　")
         for i = MJOU:-1:MJFU
             mochi = bo.BlackPiecesInHands[i]
             if mochi > 0
                 senteNum += 1
-
-                print(MOCHISTR[i])
+                print_with_color(:cyan, MOCHISTR[i])
+                #print(MOCHISTR[i])
                 if mochi > 1
-                    print(mochi)
+                    print_with_color(:cyan, "$mochi")
                 end
             end
         end
         if senteNum == 0
-            print("なし")
+            print_with_color(:cyan, "なし")
         end
         println()
     else
@@ -383,15 +385,20 @@ function DisplayBoard(bo::Board)
             koma = bo.square[sq]
             komamoji::UTF8String = doubleZenkakuSpace
             if koma == MJNONE
-	        print("\e[36m ..  \e[30m ")
+          print_with_color(:green," ..   ")
+	        #print("\e[34m ..  \e[37m ")
             else
                 komamoji = KOMASTR[koma&0x0f]
                 if koma < MJGOTE
-                    print("\e[34m+")
-                    print(KOMASTR[koma&0x0f],"\e[30m ")
+                    print_with_color(:white,"+")
+                    #print("\e[34m+")
+                    print_with_color(:white, KOMASTR[koma&0x0f]," ")
+                    #print(KOMASTR[koma&0x0f],"\e[30m ")
                 elseif koma > MJGOTE
-                    print("\e[30m-")
-                    print(KOMASTR[koma&0x0f],"\e[30m ")
+                    print_with_color(:cyan,"-")
+                    #print("\e[30m-")
+                    print_with_color(:cyan,KOMASTR[koma&0x0f]," ")
+                    #print(KOMASTR[koma&0x0f],"\e[30m ")
                 end
             end
         end
