@@ -330,10 +330,11 @@ function parseGo(list,side)
   println("remain time = ", remainTime)
 
   minByoyomi = 2 # 2 secs
-  thinkTime = 10
+  byoyomiThinkingTime = 8
+  thinkTime = 0
   if isByoyomi
     if (winc > 0)&&(binc > 0) # fisher rule
-      thinkTime = Int64(remainTime * 0.8)
+      thinkTime = Int64(1000000000 * byoyomiThinkingTime)
     else
       if byoyomi < Int64(1000000000 * minByoyomi)
         thinkTime = Int64(UInt64(byoyomi >>> 1))
