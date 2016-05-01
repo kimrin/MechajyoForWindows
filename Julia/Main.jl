@@ -331,7 +331,7 @@ function parseGo(list,side)
   println("remain time = ", remainTime)
 
   minByoyomi = 2 # 2 secs
-  byoyomiThinkingTime = 8
+  byoyomiThinkingTime = 10
   thinkTime = 0
   if isByoyomi
     if (winc > 0)&&(binc > 0) # fisher rule
