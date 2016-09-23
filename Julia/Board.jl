@@ -153,7 +153,7 @@ function SquareInit(sq::Array{Int,1}, mochi_sente::Array{Int,1}, mochi_gote::Arr
     bo
 end
 
-function InitSFEN(sfen::ASCIIString, bo::Board)
+function InitSFEN(sfen::String, bo::Board)
     rank::Int = 9
     file::Int = 1
     promote::Int = 0
@@ -383,7 +383,7 @@ function DisplayBoard(bo::Board)
         for j = 1:NumFile
             sq += 1
             koma = bo.square[sq]
-            komamoji::UTF8String = doubleZenkakuSpace
+            komamoji::String = doubleZenkakuSpace
             if koma == MJNONE
           print_with_color(:green," ..   ")
 	        #print("\e[34m ..  \e[37m ")
@@ -431,7 +431,7 @@ function BBTest()
     sfenHirate = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1"
     board = InitSFEN(sfenHirate, bo)
     #DisplayBoard(board)
-    #sfen = "8l/1l+R2P3/p2pBG1pp/kps1p4/Nn1P2G2/P1P1P2PP/1PS6/1KSG3+r1/LN2+p3L w Sbgn3p 124"::ASCIIString
+    #sfen = "8l/1l+R2P3/p2pBG1pp/kps1p4/Nn1P2G2/P1P1P2PP/1PS6/1KSG3+r1/LN2+p3L w Sbgn3p 124"::String
     #bo2 = Board()
     #board2 = InitSFEN(sfen, bo2)
     #DisplayBoard(board2)

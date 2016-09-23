@@ -87,8 +87,8 @@ end
 
 function main(stdin, sock)
     sfenHirate = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1"
-    li::Array{ASCIIString,1} = ["" for x = 1:100]::Array{ASCIIString,1}
-    li2::Array{ASCIIString,1} = ["" for x = 1:100]::Array{ASCIIString,1}
+    li::Array{String,1} = ["" for x = 1:100]::Array{String,1}
+    li2::Array{String,1} = ["" for x = 1:100]::Array{String,1}
     lilen = 0
     lilen2 = 0
     side::Int = SENTE # default

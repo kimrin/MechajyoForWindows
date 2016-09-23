@@ -682,7 +682,7 @@ function generateQMoves(p::Board,           #     /* IN:盤面 */
 end
 
 function SujiDanFrom(from::Int)
-    s1::UTF8String = ""
+    s1::String = ""
     if from == MO_MOVE_SENTE
         s1 = "駒台"
     elseif from == MO_MOVE_GOTE
@@ -695,7 +695,7 @@ end
 
 function SujiDanTo(to::Int)
     #println("to=",to,"suji=",9-(to%9),", dan=",Int(to/9)+1)
-    s1::UTF8String = string(SUJISTR[9- (to%9)],DANSTR[Int(floor(to/9)) + 1])
+    s1::String = string(SUJISTR[9- (to%9)],DANSTR[Int(floor(to/9)) + 1])
     s1
 end
 
@@ -707,9 +707,9 @@ function Move2String(m::Move)
     piece::Int = seeMovePiece(m)
     sengo::Int = (piece & 0x10) >>> 4
 
-    captstr::UTF8String = ""
-    naristr::UTF8String = ""
-    uchistr::UTF8String = ""
+    captstr::String = ""
+    naristr::String = ""
+    uchistr::String = ""
 
     if capt != 0
         captstr = string(KOMASTR[capt],"取り")
@@ -721,7 +721,7 @@ function Move2String(m::Move)
         uchistr = "打ち"
     end
 
-    s::UTF8String = string(TEBANSTR[sengo+1],SujiDanTo(to),"(",SujiDanFrom(from),")",KOMASTR[piece&0x0f],captstr,naristr,uchistr)
+    s::String = string(TEBANSTR[sengo+1],SujiDanTo(to),"(",SujiDanFrom(from),")",KOMASTR[piece&0x0f],captstr,naristr,uchistr)
     s
 end
 
@@ -849,7 +849,7 @@ function takeBackOld(q::Board,
     q.nextMove $= 1
 end
 
-function findPosition(st::ASCIIString) # 0 origin
+function findPosition(st::String) # 0 origin
     fromSuji::Int = Int(st[1] - '0')
     fromDan::Int  = Int(st[2] - '`')
     #println("(suji,dan) = ",fromSuji, ",",fromDan)
@@ -857,7 +857,7 @@ function findPosition(st::ASCIIString) # 0 origin
     # return BOARDINDEX[fromSuji,fromDan] - 1
 end
 
-function findIndex(out::Array{Move,1},move::ASCIIString,sengo::Int,
+function findIndex(out::Array{Move,1},move::String,sengo::Int,
                    Start::Int,End::Int)
     index::Int = -1
     nari::Int = 0
@@ -913,11 +913,11 @@ function findIndex(out::Array{Move,1},move::ASCIIString,sengo::Int,
 end
 
 function move2USIString(m::Move)
-    ret::ASCIIString = ""
+    ret::String = ""
     nari::Int = 0
-    capt::ASCIIString = ""
-    from::ASCIIString = ""
-    to::ASCIIString = ""
+    capt::String = ""
+    from::String = ""
+    to::String = ""
 
     if (m.move & 0x00000400) == 0x00000400 # UCHI
         capt = num2usiDict[Int(m.move & 0x1f)]
@@ -961,7 +961,7 @@ function GenMoveTest(gs::GameStatus)
     sfenHirate = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1"
     board = InitSFEN(sfenHirate, bo)
     DisplayBoard(board)
-    sfen = "8l/1l+R2P3/p2pBG1pp/kps1p4/Nn1P2G2/P1P1P2PP/1PS6/1KSG3+r1/LN2+p3L w Sbgn3p 124"::ASCIIString
+    sfen = "8l/1l+R2P3/p2pBG1pp/kps1p4/Nn1P2G2/P1P1P2PP/1PS6/1KSG3+r1/LN2+p3L w Sbgn3p 124"::String
     bo2 = Board()
     board2 = InitSFEN(sfen, bo2)
     DisplayBoard(board2)

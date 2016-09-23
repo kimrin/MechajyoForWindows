@@ -4,7 +4,7 @@ const MaxMoves = 2000000 # 少ないかも。。。でもこんなに読まな�
 const SENTE = 0 # ▲先手
 const GOTE  = 1 # △後手
 
-const ALPHALINE = ASCIIString["A", "B", "C", "D", "E", "F", "G", "H", "I", "J" ]
+const ALPHALINE = String["A", "B", "C", "D", "E", "F", "G", "H", "I", "J" ]
 
 #fi = open("table.jl","w")
 #
@@ -227,7 +227,7 @@ const SQUARENAME = ["a9","b9","c9","d9","e9","f9","g9","h9","i9",
                     "a4","b4","c4","d4","e4","f4","g4","h4","i4",
                     "a3","b3","c3","d3","e3","f3","g3","h3","i3",
                     "a2","b2","c2","d2","e2","f2","g2","h2","i2",
-                    "a1","b1","c1","d1","e1","f1","g1","h1","i1"]::Array{ASCIIString,1}
+                    "a1","b1","c1","d1","e1","f1","g1","h1","i1"]::Array{String,1}
 
 const USISQNAME = ["9a","8a","7a","6a","5a","4a","3a","2a","1a",
 		   "9b","8b","7b","6b","5b","4b","3b","2b","1b",
@@ -237,7 +237,7 @@ const USISQNAME = ["9a","8a","7a","6a","5a","4a","3a","2a","1a",
 		   "9f","8f","7f","6f","5f","4f","3f","2f","1f",
 		   "9g","8g","7g","6g","5g","4g","3g","2g","1g",
 		   "9h","8h","7h","6h","5h","4h","3h","2h","1h",
-		   "9i","8i","7i","6i","5i","4i","3i","2i","1i"]::Array{ASCIIString,1}
+		   "9i","8i","7i","6i","5i","4i","3i","2i","1i"]::Array{String,1}
 
 const HIRATE = [ MJGOKY, MJGOKE, MJGOGI, MJGOKI, MJGOOU, MJGOKI, MJGOGI, MJGOKE, MJGOKY,
                  MJNONE, MJGOHI, MJNONE, MJNONE, MJNONE, MJNONE, MJNONE, MJGOKA, MJNONE,
@@ -253,7 +253,7 @@ const HIRATE = [ MJGOKY, MJGOKE, MJGOGI, MJGOKI, MJGOOU, MJGOKI, MJGOGI, MJGOKE,
 const PIECENAMES = ["  ", "P ", "L ", "N ", "S ", "G ", "B ", "R ",
 		    "K ", "+P", "+L", "+N", "+S", "  ", "+B", "+R",
 		    "  ", "p ", "l ", "n ", "s ", "g ", "b ", "r ",
-		    "k ", "+p", "+l", "+n", "+s", "  ", "+b", "+r"]::Array{ASCIIString,1}
+		    "k ", "+p", "+l", "+n", "+s", "  ", "+b", "+r"]::Array{String,1}
 const usiDict = Dict{Any,Any}("P"=>MJFU,"L"=>MJKY,"N"=>MJKE,"S"=>MJGI,
                               "G"=>MJKI,"B"=>MJKA,"R"=>MJHI,
                               "p"=>MJFU,"l"=>MJKY,"n"=>MJKE,"s"=>MJGI,
@@ -269,7 +269,7 @@ const NumFile = 9
 const NumRank = 9
 const NumSQ   = 81
 
-const doubleZenkakuSpace = "　　"::UTF8String
+const doubleZenkakuSpace = "　　"::String
 
 const KOMASTR = ["歩　",
                  "香　",
@@ -285,7 +285,7 @@ const KOMASTR = ["歩　",
                  "成銀",
                  "成金",
                  "馬　",
-                 "龍　"]::Array{UTF8String,1}
+                 "龍　"]::Array{String,1}
 
 const MOCHISTR = ["歩",
                   "香",
@@ -294,9 +294,9 @@ const MOCHISTR = ["歩",
                   "金",
                   "角",
                   "飛",
-                  "王"]::Array{UTF8String,1}
+                  "王"]::Array{String,1}
 
-const TEBANSTR = ["▲ ", "△ "]::Array{UTF8String,1}
+const TEBANSTR = ["▲ ", "△ "]::Array{String,1}
 
 const SUJISTR  = ["１",
                   "２",
@@ -306,7 +306,7 @@ const SUJISTR  = ["１",
                   "６",
                   "７",
                   "８",
-                  "９"]::Array{UTF8String,1}
+                  "９"]::Array{String,1}
 
 const DANSTR = ["一",
                 "二",
@@ -316,7 +316,7 @@ const DANSTR = ["一",
                 "六",
                 "七",
                 "八",
-                "九"]::Array{UTF8String,1}
+                "九"]::Array{String,1}
 
 const MATERIAL = [87, # FU
                   232,# KY

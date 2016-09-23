@@ -9,7 +9,7 @@ immutable TransP
 end
 
 type GameStatus
-    bookfile::ASCIIString
+    bookfile::String
     usebook::Bool
     canponder::Bool
     hashsize::UInt32
