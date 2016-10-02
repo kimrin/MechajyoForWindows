@@ -2,10 +2,10 @@
 ## info time 203 nodes 11111111 score cp 11168 pv 5e9i+ ....
 
 function rememberPV(gs::GameStatus)
-    # remember the last PV, and also the 5 previous ones because 
+    # remember the last PV, and also the 5 previous ones because
     # they usually contain good moves to try
     i::Int = 0
-    
+
     gs.lastPVLength = gs.triangularLength[1]
     #println("last length = ", gs.triangularLength[1])
     for i = 1:gs.triangularLength[1]
@@ -103,7 +103,7 @@ function AlphaBeta( gs::GameStatus, ply::Int, depth::Float64, alpha::Int, beta::
     tt_val::Int = 0
     tt_bestMove = Move(0,0,0,0,0,0)
     if depth <= 0.0
-	gs.followpv = false
+        gs.followpv = false
         return Qui( gs, ply, alpha, beta)
     end
 
@@ -263,7 +263,7 @@ function think( sengo::Int, gs::GameStatus)
 
     for IDdepth = 1.0:1.0:15.0 #MaxPly
         gs.moveBufLen = [0 for x = 1:MaxPly]::Array{Int,1}
-        gs.moveBuf = [Move(0,0,0,0,0,0) for x = 1:MaxMoves]        
+        gs.moveBuf = [Move(0,0,0,0,0,0) for x = 1:MaxMoves]
         gs.triangularLength = [0 for x = 1:MaxPly]::Array{Int,1}
         gs.triangularArray  = [Move(0,0,0,0,0,0) for x = 1:MaxPly, y = 1:MaxPly]::Array{Move,2}
         gs.followpv = true
@@ -312,7 +312,7 @@ function thinkASP( sengo::Int, gs::GameStatus, sock)
 
         while hitScore == false
             gs.moveBufLen = [0 for x = 1:MaxPly]::Array{Int,1}
-            gs.moveBuf = [Move(0,0,0,0,0,0) for x = 1:MaxMoves]        
+            gs.moveBuf = [Move(0,0,0,0,0,0) for x = 1:MaxMoves]
             gs.triangularLength = [0 for x = 1:MaxPly]::Array{Int,1}
             gs.triangularArray  = [Move(0,0,0,0,0,0) for x = 1:MaxPly, y = 1:MaxPly]::Array{Move,2}
             gs.followpv = true

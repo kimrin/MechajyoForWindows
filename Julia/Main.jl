@@ -1,24 +1,29 @@
 #!/usr/local/bin/julia
 #
-# メカ女子将棋システム (C) 2013 メカ女子将棋部☆
+# メカ女子将棋システム (C) 2016 メカ女子将棋部☆
 #
 # メカ女子将棋部：
 #
 # 竹部　さゆり（女流三段）様
 #   メカさゆりん
-# 渡辺　弥生（女流一級）様
+# 渡辺　弥生（女流初段）様
 #   メカみおたん
 # 酒井　美由紀（裁縫顧問）様
 # 　メカみゅーん
-# T.R.　（女子大学院生）様
+# 辻　理絵子（女子大学院生）様
 #   メカりえぽん
 # 木村　健（メカウーサーメカ担当、実装責任者）
-#   メカきむりん、プロジェクトリーダー、小五女子w
+#   メカきむりん、プロジェクトリーダー、小六女子w
 #
+#
+# 使い方
+# cd Julia
+# ./Main.jl stdio           # 標準入出力を使う場合
+# ./Main.jl tcp 192.168.0.1 # tcp思考サーバを立ち上げる場合
 #
 
 const MECHA_JYOSHI_SHOGI = 1
-const MECHAJYO_VERSION = "BlackMechajyo"
+const MECHAJYO_VERSION = "Monkey Mechajyo"
 
 const THINK_TIME_IN_NS = UInt64(1000000000*14)
 const THINK_BYOYOMI_IN_NS = UInt64(1000000000*8)
@@ -43,10 +48,6 @@ include("PVS.jl")
 
 # おまじない
 function setupIO()
-    stdinx::Ptr{UInt8} = 0
-    stdoutx::Ptr{UInt8} = 0
-    #ret = ccall((:setunbuffering, "../lib/libMJ.so.1"), Int32, ())
-
     gs = InitGS()
     InitTables(gs)
     #BBTest2(gs)
@@ -54,35 +55,33 @@ function setupIO()
     return gs
 end
 
-#println(x...) = (for a in x; print(a); end; print("\r\n"))
-
 function producer()
-  if length(ARGS) == 1
-    if ARGS[1] == "stdio"
-      sock  = STDOUT
-      stdin = STDIN
-      ret = main(stdin,sock)
-    end
-  end
-  if (length(ARGS) == 2) && (ARGS[1] == "tcp")
-    addr = ARGS[2]
-    println("establish server (", addr, ") port: ", "4091")
-    begin
-      #server = listen(getaddrinfo("127.0.0.1"), parse(UInt32,"4091"))
-      server = listen(getaddrinfo(addr), parse(UInt32,"4091"))
-      while true
-        println("waiting for connection...")
-        sock  = accept(server)
-        println("establish connection!")
-        while true
-          ret = main(sock,sock)
-          break
+    if length(ARGS) == 1
+        if ARGS[1] == "stdio"
+            sock  = STDOUT
+            stdin = STDIN
+            ret = main(stdin,sock)
         end
-        close(sock)
-        break
-      end
     end
-  end
+    if (length(ARGS) == 2) && (ARGS[1] == "tcp")
+        addr = ARGS[2]
+        println("establish server (", addr, ") port: ", "4091")
+        begin
+            #server = listen(getaddrinfo("127.0.0.1"), parse(UInt32,"4091"))
+            server = listen(getaddrinfo(addr), parse(UInt32,"4091"))
+            while true
+                println("waiting for connection...")
+                sock  = accept(server)
+                println("establish connection!")
+                while true
+                    ret = main(sock,sock)
+                    break
+                end
+                close(sock)
+                break
+            end
+        end
+    end
 end
 
 function main(stdin, sock)
@@ -157,9 +156,9 @@ function main(stdin, sock)
                             else
                                 #println(sock,"index = ", idx)
                                 makeMove(gs.board,
-		                         idx,
-		                         out,
-		                         SENTE)
+                                idx,
+                                out,
+                                SENTE)
                                 #println(sock,"move=",move2USIString(out[idx]))
                             end
                         else # 後手
@@ -174,9 +173,9 @@ function main(stdin, sock)
                             else
                                 #println(sock,"index = ", idx)
                                 makeMove(gs.board,
-		                         idx,
-		                         out,
-		                         GOTE)
+                                idx,
+                                out,
+                                GOTE)
                                 #println(sock,"move=",move2USIString(out[idx]))
                             end
                         end
@@ -217,9 +216,9 @@ function main(stdin, sock)
                             else
                                 #println(sock,"index = ", idx)
                                 makeMove(gs.board,
-		                         idx,
-		                         out,
-		                         SENTE)
+                                idx,
+                                out,
+                                SENTE)
                                 #println(sock,"move=",move2USIString(out[idx]))
                             end
                         else # 後手
@@ -234,9 +233,9 @@ function main(stdin, sock)
                             else
                                 #println(sock,"index = ", idx)
                                 makeMove(gs.board,
-		                         idx,
-		                         out,
-		                         GOTE)
+                                idx,
+                                out,
+                                GOTE)
                                 #println(sock,"move=",move2USIString(out[idx]))
                             end
                         end
@@ -250,31 +249,31 @@ function main(stdin, sock)
             count2 = generateMoves(gs.board, out, side, 0, gs)
             count3 = generateBB(gs.board, out, side, 0, gs)
             if count2 == 0
-              println(sock,"bestmove resign")
-            else
-              # chose random moves
-              #randomIndex::Int = rand(UInt32) % (count2)
-              Index::Int = -1
-              #m::Move = think(side,gs)
-              gs.maxThinkingTime = thinkTime
-              m::Move = thinkASP(side,gs,sock)
-              #println(sock,"move=",m)
-              for q = 1:count2
-                if out[q].move == m.move
-                  Index = q
-                  break
-                end
-              end
-              if Index == -1
                 println(sock,"bestmove resign")
-              else
-                makeMove(gs.board,Index,out,side)
-                if in_check( side, gs.board)
-                  # println("check!")
+            else
+                # chose random moves
+                #randomIndex::Int = rand(UInt32) % (count2)
+                Index::Int = -1
+                #m::Move = think(side,gs)
+                gs.maxThinkingTime = thinkTime
+                m::Move = thinkASP(side,gs,sock)
+                #println(sock,"move=",m)
+                for q = 1:count2
+                    if out[q].move == m.move
+                        Index = q
+                        break
+                    end
                 end
-                println(sock,"bestmove ",move2USIString(out[Index]))
-                DisplayBoard(gs.board)
-              end
+                if Index == -1
+                    println(sock,"bestmove resign")
+                else
+                    makeMove(gs.board,Index,out,side)
+                    if in_check( side, gs.board)
+                        # println("check!")
+                    end
+                    println(sock,"bestmove ",move2USIString(out[Index]))
+                    DisplayBoard(gs.board)
+                end
             end
         elseif startswith(st,"gameover")
             # do nothing
@@ -287,70 +286,70 @@ function main(stdin, sock)
 end
 
 function parseGo(list,side)
-  i = 1
-  btime = 0
-  wtime = 0
-  byoyomi = 0
-  winc = 0
-  binc = 0
-  for x in list
-    if btime == -1
-      btime = parse(UInt64,x*"000000")
-    end
-    if wtime == -1
-      wtime = parse(UInt64,x*"000000")
-    end
-    if byoyomi == -1
-      byoyomi = parse(UInt64,x*"000000")
-    end
-    if winc == -1
-      winc = parse(UInt64,x*"000000")
-    end
-    if binc == -1
-      binc = parse(UInt64,x*"000000")
+    i = 1
+    btime = 0
+    wtime = 0
+    byoyomi = 0
+    winc = 0
+    binc = 0
+    for x in list
+        if btime == -1
+            btime = parse(UInt64,x*"000000")
+        end
+        if wtime == -1
+            wtime = parse(UInt64,x*"000000")
+        end
+        if byoyomi == -1
+            byoyomi = parse(UInt64,x*"000000")
+        end
+        if winc == -1
+            winc = parse(UInt64,x*"000000")
+        end
+        if binc == -1
+            binc = parse(UInt64,x*"000000")
+        end
+
+        if x == "btime"
+            btime = -1
+        elseif x == "wtime"
+            wtime = -1
+        elseif x == "byoyomi"
+            byoyomi = -1
+        elseif x == "winc"
+            winc = -1
+        elseif x == "binc"
+            binc = -1
+        end
+        i = i + 1
     end
 
-    if x == "btime"
-      btime = -1
-    elseif x == "wtime"
-      wtime = -1
-    elseif x == "byoyomi"
-      byoyomi = -1
-    elseif x == "winc"
-      winc = -1
-    elseif x == "binc"
-      binc = -1
-    end
-    i = i + 1
-  end
+    isByoyomi = (side == SENTE) ? (btime < BEGIN_BYOYOMI_IN_NS):  (wtime < BEGIN_BYOYOMI_IN_NS)
 
-  isByoyomi = (side == SENTE) ? (btime < BEGIN_BYOYOMI_IN_NS):  (wtime < BEGIN_BYOYOMI_IN_NS)
+    remainTime = (side == SENTE)? btime: wtime
 
-  remainTime = (side == SENTE)? btime: wtime
+    println("remain time = ", remainTime)
 
-  println("remain time = ", remainTime)
-
-  minByoyomi = 2 # 2 secs
-  byoyomiThinkingTime = 10
-  thinkTime = 0
-  if isByoyomi
-    if (winc > 0)&&(binc > 0) # fisher rule
-      thinkTime = Int64(1000000000 * byoyomiThinkingTime)
+    minByoyomi = 2 # 2 secs
+    byoyomiThinkingTime = 10
+    thinkTime = 0
+    if isByoyomi
+        if (winc > 0)&&(binc > 0) # fisher rule
+            thinkTime = Int64(1000000000 * byoyomiThinkingTime)
+        else
+            if byoyomi < Int64(1000000000 * minByoyomi)
+                thinkTime = Int64(UInt64(byoyomi >>> 1))
+            else
+                thinkTime = byoyomi - Int64(1000000000 * minByoyomi)
+            end
+        end
     else
-      if byoyomi < Int64(1000000000 * minByoyomi)
-        thinkTime = Int64(UInt64(byoyomi >>> 1))
-      else
-        thinkTime = byoyomi - Int64(1000000000 * minByoyomi)
-      end
+        thinkTime = THINK_TIME_IN_NS
     end
-  else
-    thinkTime = THINK_TIME_IN_NS
-  end
-  start = time_ns() # sampling time value
-  goal = start + thinkTime
-  tObj = (start,goal,isByoyomi,thinkTime)
-  println(tObj)
-  return tObj
+    start = time_ns() # sampling time value
+    goal = start + thinkTime
+    tObj = (start,goal,isByoyomi,thinkTime)
+    # println(tObj)
+    return tObj
 end
 
 producer()
