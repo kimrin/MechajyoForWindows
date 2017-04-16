@@ -1,0 +1,6 @@
+usi
+isready
+usinewgame
+position sfen 9/9/5B3/2rp5/l8/1k1+B5/p1sL5/3N5/2N5K b R4g3s2n2l16p 1
+go btime 100000 wtime 100000 winc 10000 binc 10000
+quit
