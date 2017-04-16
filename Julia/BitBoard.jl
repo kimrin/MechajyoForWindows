@@ -40,7 +40,7 @@ const movableNoSliding = [(1,0) (0,0) (0,0) (0,0) (0,0) (0,0) (0,0) (0,0);
 
 const isSlidePiece = [ 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0,  0, 1, 1]::Array{Int,1}
                     # FU,KY,KE,GI,KI,KA,HI,OU,TO,NY,NK,NG,NKI,UM,RY
-                      
+
 
 
 #for x = 1:size(movableNoSliding,1)
@@ -170,7 +170,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
     count::Int32 = Int32(co)
     target::BitBoard = UInt128(0)
     bbp::BitBoard    = UInt128(0)
-    
+
     if teban == SENTE
         target = (~p.WhitePieces) & MaskOfBoard
         # println("target")
@@ -183,14 +183,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJFU,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 if (to+1) < A6
                     # promotion
@@ -207,7 +207,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 end
             end
         end
-        
+
         # MJKYはsliding pieceなので割愛
 
         # KE
@@ -217,14 +217,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJKE,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 if (to+1) < A6
                     # promotion
@@ -249,14 +249,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGI,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 if ((to+1) < A6 )||((from+1) < A6)
                     # promotion
@@ -279,14 +279,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJKI,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 count += 1
@@ -302,14 +302,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJOU,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 count += 1
@@ -325,14 +325,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJTO,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 count += 1
@@ -348,14 +348,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJNY,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 count += 1
@@ -371,14 +371,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJNK,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 count += 1
@@ -394,14 +394,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJNG,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 count += 1
@@ -421,14 +421,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGOFU,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 if (to+1) >= A3
                     # promotion
@@ -445,7 +445,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 end
             end
         end
-        
+
         # MJKYはsliding pieceなので割愛
 
         # GOKE
@@ -455,14 +455,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGOKE,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 if (to+1) >= A3
                     # promotion
@@ -487,14 +487,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGOGI,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 if ((to+1) >= A3 )||((from+1) >= A3)
                     # promotion
@@ -517,14 +517,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGOKI,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 count += 1
@@ -540,14 +540,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGOOU,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 count += 1
@@ -563,14 +563,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGOTO,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 count += 1
@@ -586,14 +586,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGONY,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 count += 1
@@ -609,14 +609,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGONK,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 count += 1
@@ -632,14 +632,14 @@ function genBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGONG,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 count += 1
@@ -659,7 +659,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
     count::Int32 = Int32(co)
     target::BitBoard = UInt128(0)
     bbp::BitBoard    = UInt128(0)
-    
+
     if teban == SENTE
         target = (~p.WhitePieces) & MaskOfBoard
         # println("target")
@@ -672,14 +672,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJFU,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 if (to+1) < A6
                     # promotion
@@ -696,7 +696,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 end
             end
         end
-        
+
         # MJKYはsliding pieceなので割愛
 
         # KE
@@ -706,14 +706,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJKE,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 if (to+1) < A6
                     # promotion
@@ -738,14 +738,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGI,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 if ((to+1) < A6 )||((from+1) < A6)
                     # promotion
@@ -770,14 +770,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJKI,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 if toriflag == FLAG_TORI
@@ -795,14 +795,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJOU,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 if toriflag == FLAG_TORI
@@ -820,14 +820,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJTO,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 if toriflag == FLAG_TORI
@@ -845,14 +845,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJNY,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 if toriflag == FLAG_TORI
@@ -870,14 +870,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJNK,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 if toriflag == FLAG_TORI
@@ -895,14 +895,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJNG,from+1]
             toru::BitBoard = dest & p.BlackPieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 if toriflag == FLAG_TORI
@@ -924,14 +924,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGOFU,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 if (to+1) >= A3
                     # promotion
@@ -948,7 +948,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 end
             end
         end
-        
+
         # MJKYはsliding pieceなので割愛
 
         # GOKE
@@ -958,14 +958,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGOKE,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 if (to+1) >= A3
                     # promotion
@@ -990,14 +990,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGOGI,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 if ((to+1) >= A3 )||((from+1) >= A3)
                     # promotion
@@ -1022,14 +1022,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGOKI,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 if toriflag == FLAG_TORI
@@ -1047,14 +1047,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGOOU,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 if toriflag == FLAG_TORI
@@ -1072,14 +1072,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGOTO,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 if toriflag == FLAG_TORI
@@ -1097,14 +1097,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGONY,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 if toriflag == FLAG_TORI
@@ -1122,14 +1122,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGONK,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 if toriflag == FLAG_TORI
@@ -1147,14 +1147,14 @@ function genQBB(p::Board,           #     /* IN:盤面 */
             from = trailing_zeros(bbp)
             # println("bbp")
             # DisplayBitBoard(bbp,false)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             dest::BitBoard = target & gs.AttackTableNonSlide[MJGONG,from+1]
             toru::BitBoard = dest & p.WhitePieces
             while dest > UInt128(0)
                 to = trailing_zeros(dest)
                 # println("dest")
                 # DisplayBitBoard( dest, false)
-                dest $= BitSet[to+1]
+                dest ⊻= BitSet[to+1]
                 toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
                 # normal move
                 if toriflag == FLAG_TORI
@@ -1176,7 +1176,7 @@ function genBBDrop(p::Board,           #     /* IN:盤面 */
     count::Int32 = Int32(co)
     target::BitBoard = UInt128(0)
     bbp::BitBoard    = UInt128(0)
-    
+
     if teban == SENTE
         target = (~(p.WhitePieces|p.BlackPieces)) & MaskOfBoard
         # println("target")
@@ -1202,7 +1202,7 @@ function genBBDrop(p::Board,           #     /* IN:盤面 */
 
             while secondTarget > UInt128(0)
                 from = trailing_zeros(secondTarget)
-                secondTarget $= BitSet[from+1]
+                secondTarget ⊻= BitSet[from+1]
                 count += 1
                 out[count] = Move(MJFU,MO_MOVE_SENTE,from,FLAG_UCHI,0,0)::Move
                 InsertMoveAB(count,out,gs)
@@ -1217,7 +1217,7 @@ function genBBDrop(p::Board,           #     /* IN:盤面 */
 
             while secondTarget > UInt128(0)
                 from = trailing_zeros(secondTarget)
-                secondTarget $= BitSet[from+1]
+                secondTarget ⊻= BitSet[from+1]
                 count += 1
                 out[count] = Move(MJKY,MO_MOVE_SENTE,from,FLAG_UCHI,0,0)::Move
                 InsertMoveAB(count,out,gs)
@@ -1232,7 +1232,7 @@ function genBBDrop(p::Board,           #     /* IN:盤面 */
 
             while secondTarget > UInt128(0)
                 from = trailing_zeros(secondTarget)
-                secondTarget $= BitSet[from+1]
+                secondTarget ⊻= BitSet[from+1]
                 count += 1
                 out[count] = Move(MJKE,MO_MOVE_SENTE,from,FLAG_UCHI,0,0)::Move
                 InsertMoveAB(count,out,gs)
@@ -1247,7 +1247,7 @@ function genBBDrop(p::Board,           #     /* IN:盤面 */
 
             while secondTarget > UInt128(0)
                 from = trailing_zeros(secondTarget)
-                secondTarget $= BitSet[from+1]
+                secondTarget ⊻= BitSet[from+1]
                 count += 1
                 #println("move=",count) # for debug purpose
                 out[count] = Move(MJGI,MO_MOVE_SENTE,from,FLAG_UCHI,0,0)::Move
@@ -1263,7 +1263,7 @@ function genBBDrop(p::Board,           #     /* IN:盤面 */
 
             while secondTarget > UInt128(0)
                 from = trailing_zeros(secondTarget)
-                secondTarget $= BitSet[from+1]
+                secondTarget ⊻= BitSet[from+1]
                 count += 1
                 out[count] = Move(MJKI,MO_MOVE_SENTE,from,FLAG_UCHI,0,0)::Move
                 InsertMoveAB(count,out,gs)
@@ -1278,7 +1278,7 @@ function genBBDrop(p::Board,           #     /* IN:盤面 */
 
             while secondTarget > UInt128(0)
                 from = trailing_zeros(secondTarget)
-                secondTarget $= BitSet[from+1]
+                secondTarget ⊻= BitSet[from+1]
                 count += 1
                 out[count] = Move(MJKA,MO_MOVE_SENTE,from,FLAG_UCHI,0,0)::Move
                 InsertMoveAB(count,out,gs)
@@ -1293,7 +1293,7 @@ function genBBDrop(p::Board,           #     /* IN:盤面 */
 
             while secondTarget > UInt128(0)
                 from = trailing_zeros(secondTarget)
-                secondTarget $= BitSet[from+1]
+                secondTarget ⊻= BitSet[from+1]
                 count += 1
                 out[count] = Move(MJHI,MO_MOVE_SENTE,from,FLAG_UCHI,0,0)::Move
                 InsertMoveAB(count,out,gs)
@@ -1324,7 +1324,7 @@ function genBBDrop(p::Board,           #     /* IN:盤面 */
 
             while secondTarget > UInt128(0)
                 from = trailing_zeros(secondTarget)
-                secondTarget $= BitSet[from+1]
+                secondTarget ⊻= BitSet[from+1]
                 count += 1
                 out[count] = Move(MJGOFU,MO_MOVE_GOTE,from,FLAG_UCHI,0,0)::Move
                 InsertMoveAB(count,out,gs)
@@ -1339,7 +1339,7 @@ function genBBDrop(p::Board,           #     /* IN:盤面 */
 
             while secondTarget > UInt128(0)
                 from = trailing_zeros(secondTarget)
-                secondTarget $= BitSet[from+1]
+                secondTarget ⊻= BitSet[from+1]
                 count += 1
                 out[count] = Move(MJGOKY,MO_MOVE_GOTE,from,FLAG_UCHI,0,0)::Move
                 InsertMoveAB(count,out,gs)
@@ -1354,7 +1354,7 @@ function genBBDrop(p::Board,           #     /* IN:盤面 */
 
             while secondTarget > UInt128(0)
                 from = trailing_zeros(secondTarget)
-                secondTarget $= BitSet[from+1]
+                secondTarget ⊻= BitSet[from+1]
                 count += 1
                 out[count] = Move(MJGOKE,MO_MOVE_GOTE,from,FLAG_UCHI,0,0)::Move
                 InsertMoveAB(count,out,gs)
@@ -1369,7 +1369,7 @@ function genBBDrop(p::Board,           #     /* IN:盤面 */
 
             while secondTarget > UInt128(0)
                 from = trailing_zeros(secondTarget)
-                secondTarget $= BitSet[from+1]
+                secondTarget ⊻= BitSet[from+1]
                 count += 1
                 out[count] = Move(MJGOGI,MO_MOVE_GOTE,from,FLAG_UCHI,0,0)::Move
                 InsertMoveAB(count,out,gs)
@@ -1384,7 +1384,7 @@ function genBBDrop(p::Board,           #     /* IN:盤面 */
 
             while secondTarget > UInt128(0)
                 from = trailing_zeros(secondTarget)
-                secondTarget $= BitSet[from+1]
+                secondTarget ⊻= BitSet[from+1]
                 count += 1
                 out[count] = Move(MJGOKI,MO_MOVE_GOTE,from,FLAG_UCHI,0,0)::Move
                 InsertMoveAB(count,out,gs)
@@ -1399,7 +1399,7 @@ function genBBDrop(p::Board,           #     /* IN:盤面 */
 
             while secondTarget > UInt128(0)
                 from = trailing_zeros(secondTarget)
-                secondTarget $= BitSet[from+1]
+                secondTarget ⊻= BitSet[from+1]
                 count += 1
                 out[count] = Move(MJGOKA,MO_MOVE_GOTE,from,FLAG_UCHI,0,0)::Move
                 InsertMoveAB(count,out,gs)
@@ -1414,7 +1414,7 @@ function genBBDrop(p::Board,           #     /* IN:盤面 */
 
             while secondTarget > UInt128(0)
                 from = trailing_zeros(secondTarget)
-                secondTarget $= BitSet[from+1]
+                secondTarget ⊻= BitSet[from+1]
                 count += 1
                 out[count] = Move(MJGOHI,MO_MOVE_GOTE,from,FLAG_UCHI,0,0)::Move
                 InsertMoveAB(count,out,gs)
@@ -1438,7 +1438,7 @@ function genSlideMailbox(teban::Int,
         bbp = p.bb[MJKY]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailbox0x88(teban, from, p, out, count, gs)
         end
 
@@ -1446,7 +1446,7 @@ function genSlideMailbox(teban::Int,
         bbp = p.bb[MJKA]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailbox0x88(teban, from, p, out, count, gs)
         end
 
@@ -1455,7 +1455,7 @@ function genSlideMailbox(teban::Int,
         bbp = p.bb[MJHI]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailbox0x88(teban, from, p, out, count, gs)
         end
 
@@ -1464,7 +1464,7 @@ function genSlideMailbox(teban::Int,
         bbp = p.bb[MJUM]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailbox0x88(teban, from, p, out, count, gs)
         end
 
@@ -1473,7 +1473,7 @@ function genSlideMailbox(teban::Int,
         bbp = p.bb[MJRY]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailbox0x88(teban, from, p, out, count, gs)
         end
     else
@@ -1481,7 +1481,7 @@ function genSlideMailbox(teban::Int,
         bbp = p.bb[MJGOKY]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailbox0x88(teban, from, p, out, count, gs)
         end
 
@@ -1489,7 +1489,7 @@ function genSlideMailbox(teban::Int,
         bbp = p.bb[MJGOKA]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailbox0x88(teban, from, p, out, count, gs)
         end
 
@@ -1498,7 +1498,7 @@ function genSlideMailbox(teban::Int,
         bbp = p.bb[MJGOHI]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailbox0x88(teban, from, p, out, count, gs)
         end
 
@@ -1507,7 +1507,7 @@ function genSlideMailbox(teban::Int,
         bbp = p.bb[MJGOUM]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailbox0x88(teban, from, p, out, count, gs)
         end
 
@@ -1516,7 +1516,7 @@ function genSlideMailbox(teban::Int,
         bbp = p.bb[MJGORY]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailbox0x88(teban, from, p, out, count, gs)
         end
     end
@@ -1536,7 +1536,7 @@ function genSlideMailboxQ(teban::Int,
         bbp = p.bb[MJKY]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailboxQ0x88(teban, from, p, out, count, gs)
         end
 
@@ -1544,7 +1544,7 @@ function genSlideMailboxQ(teban::Int,
         bbp = p.bb[MJKA]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailboxQ0x88(teban, from, p, out, count, gs)
         end
 
@@ -1553,7 +1553,7 @@ function genSlideMailboxQ(teban::Int,
         bbp = p.bb[MJHI]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailboxQ0x88(teban, from, p, out, count, gs)
         end
 
@@ -1562,7 +1562,7 @@ function genSlideMailboxQ(teban::Int,
         bbp = p.bb[MJUM]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailboxQ0x88(teban, from, p, out, count, gs)
         end
 
@@ -1571,7 +1571,7 @@ function genSlideMailboxQ(teban::Int,
         bbp = p.bb[MJRY]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailboxQ0x88(teban, from, p, out, count, gs)
         end
     else
@@ -1579,7 +1579,7 @@ function genSlideMailboxQ(teban::Int,
         bbp = p.bb[MJGOKY]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailboxQ0x88(teban, from, p, out, count, gs)
         end
 
@@ -1587,7 +1587,7 @@ function genSlideMailboxQ(teban::Int,
         bbp = p.bb[MJGOKA]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailboxQ0x88(teban, from, p, out, count, gs)
         end
 
@@ -1596,7 +1596,7 @@ function genSlideMailboxQ(teban::Int,
         bbp = p.bb[MJGOHI]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailboxQ0x88(teban, from, p, out, count, gs)
         end
 
@@ -1605,7 +1605,7 @@ function genSlideMailboxQ(teban::Int,
         bbp = p.bb[MJGOUM]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailboxQ0x88(teban, from, p, out, count, gs)
         end
 
@@ -1614,7 +1614,7 @@ function genSlideMailboxQ(teban::Int,
         bbp = p.bb[MJGORY]
         while bbp > UInt128(0)
             from = trailing_zeros(bbp)
-            bbp $= BitSet[from+1]
+            bbp ⊻= BitSet[from+1]
             count = mailboxQ0x88(teban, from, p, out, count, gs)
         end
     end
@@ -1675,7 +1675,7 @@ function validateMoves(o1::Array{Move,1},o2::Array{Move,1},n1::Int32,n2::Int32)
     # m1 and m2
     M1andM2::Int = 0
     for m1 = 1:n1
-        move1 = o1[m1].move 
+        move1 = o1[m1].move
         for m2 = 1:n2
             move2 = o2[m2].move
             if move1 == move2
@@ -1688,7 +1688,7 @@ function validateMoves(o1::Array{Move,1},o2::Array{Move,1},n1::Int32,n2::Int32)
     # only m1
     onlyM1::Int = 0
     for m1 = 1:n1
-        move1 = o1[m1].move 
+        move1 = o1[m1].move
         fl = false
         for m2 = 1:n2
             move2 = o2[m2].move
@@ -1706,7 +1706,7 @@ function validateMoves(o1::Array{Move,1},o2::Array{Move,1},n1::Int32,n2::Int32)
     # only m2
     onlyM2::Int = 0
     for m2 = 1:n2
-        move2 = o2[m2].move 
+        move2 = o2[m2].move
         fl = false
         for m1 = 1:n1
             move1 = o1[m1].move
@@ -1756,7 +1756,7 @@ function makeMove(q::Board,
         # 1.駒台から駒を取り除く
         if from == komadai
             if teban == SENTE
-                q.WhitePiecesInHands[koma] -= 1                
+                q.WhitePiecesInHands[koma] -= 1
                 if q.WhitePiecesInHands[koma] < 0
                     println("insufficient koma(White,",koma,")")
                 end
@@ -1780,8 +1780,8 @@ function makeMove(q::Board,
             # 　同時にtoの駒のbitboardからtoの駒を削除し、fromのbitboardから駒を削除する。
             # 　またfromの成った駒のbitboardのtoの位置に成った駒を置く
 
-            q.bb[q.square[to+1]]    $= BitSet[to+1]
-            q.bb[q.square[from+1]]  $= BitSet[from+1]
+            q.bb[q.square[to+1]]    ⊻= BitSet[to+1]
+            q.bb[q.square[from+1]]  ⊻= BitSet[from+1]
             q.bb[q.square[from+1]+MJNARI] |= BitSet[to+1]
             tmpkoma = komavalTo & 0x0f
             omote = (tmpkoma > MJOU)?tmpkoma-MJNARI:tmpkoma
@@ -1797,8 +1797,8 @@ function makeMove(q::Board,
             # 　同時に、toの駒のbitboardからtoの駒を削除し、さらにfromの駒の
             # 　bitboard内でfromからtoに駒を移動。
             # 普通の取り
-            q.bb[q.square[to+1]]    $= BitSet[to+1]
-            q.bb[q.square[from+1]]  $= BitSet[from+1]
+            q.bb[q.square[to+1]]    ⊻= BitSet[to+1]
+            q.bb[q.square[from+1]]  ⊻= BitSet[from+1]
             q.bb[q.square[from+1]]  |= BitSet[to+1]
             tmpkoma = komavalTo & 0x0f
             omote = (tmpkoma > MJOU)?tmpkoma-MJNARI:tmpkoma
@@ -1815,7 +1815,7 @@ function makeMove(q::Board,
         # ・成り＝toにfromの駒を成って置く。fromは空っぽに。
         # 　同時に、fromの駒のbitboardから駒を削除する。またtoの駒のbitboard
         # 　に成った駒を置く
-        q.bb[q.square[from+1]]        $= BitSet[from+1]
+        q.bb[q.square[from+1]]        ⊻= BitSet[from+1]
         q.bb[q.square[from+1]+MJNARI] |= BitSet[to+1]
         q.square[to+1]                 = q.square[from+1] + MJNARI
         q.square[from+1]               = MJNONE
@@ -1826,7 +1826,7 @@ function makeMove(q::Board,
         q.square[to+1]        = q.square[from+1]
         q.square[from+1]      = MJNONE
         q.bb[q.square[to+1]] |= BitSet[to+1]
-        q.bb[q.square[to+1]] $= BitSet[from+1]
+        q.bb[q.square[to+1]] ⊻= BitSet[from+1]
     end
 
     if q.square[to+1] == MJOU
@@ -1843,7 +1843,7 @@ function makeMove(q::Board,
         q.WhitePieces |=q.bb[piece]
         q.BlackPieces |=q.bb[piece+MJGOTE]
     end
-    q.nextMove $= 1
+    q.nextMove ⊻= 1
 
     #consistencyBoard(q)
 end
@@ -1877,7 +1877,7 @@ function takeBack(q::Board,
         else
             q.BlackPiecesInHands[uchiGoma] += 1
         end
-        q.bb[q.square[to+1]] $= BitSet[to+1]
+        q.bb[q.square[to+1]] ⊻= BitSet[to+1]
         q.square[to+1] = MJNONE
     elseif tori == FLAG_TORI
         # 取り
@@ -1893,7 +1893,7 @@ function takeBack(q::Board,
             end
         end
 
-        aiteGoma::Int = ((teban$1) << 4)|removed
+        aiteGoma::Int = ((teban⊻1) << 4)|removed
 
         if nari == FLAG_NARI
             # 取りかつ成り
@@ -1903,8 +1903,8 @@ function takeBack(q::Board,
             # 　同時に、removedの相手駒のbitboardのtoの位置に駒を置き、
             # 　toの位置の駒のbitboard内からtoの位置の駒を除くと一緒に
             #   toの位置の駒の表の駒のbitboardのfromの位置に表にした駒を置く
-            q.bb[aiteGoma] |= BitSet[to+1]            
-            q.bb[q.square[to+1]] $= BitSet[to+1]
+            q.bb[aiteGoma] |= BitSet[to+1]
+            q.bb[q.square[to+1]] ⊻= BitSet[to+1]
             q.bb[q.square[to+1] - MJNARI] |= BitSet[from+1]
 
             q.square[from+1] = q.square[to+1] -MJNARI
@@ -1918,8 +1918,8 @@ function takeBack(q::Board,
             # 　同時に、removedの相手駒のbitboardのtoの位置に駒を置き、
             # 　toの位置の駒のbitboard内でtoからfromに駒を移動する
 
-            q.bb[aiteGoma] |= BitSet[to+1]            
-            q.bb[q.square[to+1]] $= BitSet[to+1]
+            q.bb[aiteGoma] |= BitSet[to+1]
+            q.bb[q.square[to+1]] ⊻= BitSet[to+1]
             q.bb[q.square[to+1]] |= BitSet[from+1]
 
             q.square[from+1] = q.square[to+1]
@@ -1930,7 +1930,7 @@ function takeBack(q::Board,
         # ・成り＝toの位置を空っぽにする。toにあった駒を表にして、fromに置く。
         # 　同時にtoにあった駒のbitboardからtoの位置の駒を削除する
         # 　toの位置にあった駒の表の駒のbitboardの、fromの位置に表の駒を置く
-        q.bb[q.square[to+1]] $= BitSet[to+1]
+        q.bb[q.square[to+1]] ⊻= BitSet[to+1]
         q.bb[q.square[to+1] - MJNARI] |= BitSet[from+1]
 
         q.square[from+1] = q.square[to+1] - MJNARI
@@ -1940,7 +1940,7 @@ function takeBack(q::Board,
         # 普通の指し手
         # ・普通の手＝toの位置を空っぽにする。toの位置の駒をfromに移動する。
         # 　同時に、toの位置の駒のbitboard内でtoからfromに駒を移動する
-        q.bb[q.square[to+1]] $= BitSet[to+1]
+        q.bb[q.square[to+1]] ⊻= BitSet[to+1]
         q.bb[q.square[to+1]] |= BitSet[from+1]
 
         q.square[from+1] = q.square[to+1]
@@ -1950,10 +1950,10 @@ function takeBack(q::Board,
     if uchi == 0
         if q.square[from+1] == MJOU
             q.kingposW = from+1
-            #println("undo OU: kingposW = $(from+1)")
+            #println("undo OU: kingposW = ⊻(from+1)")
         elseif q.square[from+1] == MJGOOU
             q.kingposB = from+1
-            #println("undo OU: kingposB = $(from+1)")
+            #println("undo OU: kingposB = ⊻(from+1)")
         end
     end
 
@@ -1963,7 +1963,7 @@ function takeBack(q::Board,
         q.WhitePieces |=q.bb[piece]
         q.BlackPieces |=q.bb[piece+MJGOTE]
     end
-    q.nextMove $= 1
+    q.nextMove ⊻= 1
     # consistencyBoard(q)
 end
 

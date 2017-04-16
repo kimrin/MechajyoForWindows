@@ -84,7 +84,7 @@ end
 
 function setAttack( irank::Int, ifile::Int, bb::BitBoard )
     if inBoard( irank, ifile)
-        bb $= BitSet[FR2IDX(ifile,irank)]
+        bb ⊻= BitSet[FR2IDX(ifile,irank)]
     end
     bb
 end
@@ -157,11 +157,11 @@ function InitSFEN(sfen::String, bo::Board)
     rank::Int = 9
     file::Int = 1
     promote::Int = 0
-    sq::Array{Int,1}
+    sq::Array{Int,1} = zeros(Int, I1 + 1)
     sengo::Int = SENTE
 
     fen, bw, mochi, num = split(sfen)
-    sq = [0 for x = A9:I1]::Array{Int,1}
+    # sq = [0 for x = A9:I1]::Array{Int,1}
 
     for s in fen
         # println(s)

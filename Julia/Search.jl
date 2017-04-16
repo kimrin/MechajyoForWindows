@@ -130,9 +130,9 @@ function AlphaBeta( gs::GameStatus, ply::Int, depth::Float64, alpha::Int, beta::
             if in_check( teban, gs.board)
                 gs.allownull = false
                 gs.inodes += 1
-                gs.board.nextMove $= 1
+                gs.board.nextMove ⊻= 1
                 val = -AlphaBeta( gs, ply, depth - NULLMOVE_REDUCTION, -beta, -beta+1)
-                gs.board.nextMove $= 1
+                gs.board.nextMove ⊻= 1
                 if gs.timedout
                     return 0
                 end
@@ -149,9 +149,9 @@ function AlphaBeta( gs::GameStatus, ply::Int, depth::Float64, alpha::Int, beta::
     # if (!gs.followpv) && gs.allownull
     #     gs.allownull = false
     #     gs.inodes += 1
-    #     gs.board.nextMove $= 1
+    #     gs.board.nextMove ⊻= 1
     #     val = -AlphaBeta( gs, ply, depth - NULLMOVE_REDUCTION, -beta, -alpha)
-    #     gs.board.nextMove $= 1
+    #     gs.board.nextMove ⊻= 1
     #     if gs.timedout
     #         return 0
     #     end

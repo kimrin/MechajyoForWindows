@@ -15,7 +15,7 @@ function Eval( nextMove::Int, p::Board, gs::GameStatus)
     tebanP::Int = SENTE
     while bbp > UInt128(0)
         from = trailing_zeros(bbp)
-        bbp $= BitSet[from+1]
+        bbp ⊻= BitSet[from+1]
         q::Int = p.square[from+1]
         koma::Int = q & 0x0f
         score += MATERIAL[koma]
@@ -25,7 +25,7 @@ function Eval( nextMove::Int, p::Board, gs::GameStatus)
     tebanP = GOTE
     while bbp > UInt128(0)
         from = trailing_zeros(bbp)
-        bbp $= BitSet[from+1]
+        bbp ⊻= BitSet[from+1]
         q::Int = p.square[from+1]
         koma::Int = q & 0x0f
         score -= MATERIAL[koma]

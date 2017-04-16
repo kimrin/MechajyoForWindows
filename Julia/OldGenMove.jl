@@ -222,7 +222,7 @@ function recycleMove(fu_bit_array::UInt,
                 # value = (komadai << 24) | (i << 16) | koma | teban | MW_FLAG_UCHI;
                 # out[count].move = value;
                 co += 0x00000001
-                out[co] = Move(komaval,komadai,i-1,FLAG_UCHI,0,0)::Move # value = 0          
+                out[co] = Move(komaval,komadai,i-1,FLAG_UCHI,0,0)::Move # value = 0
             end
         else
             if p.square[i] == MJNONE
@@ -231,7 +231,7 @@ function recycleMove(fu_bit_array::UInt,
                 # value = (komadai << 24) | (i << 16) | koma | teban | MW_FLAG_UCHI;
                 # out[count].move = value;
                 co += 0x00000001
-                out[co] = Move(komaval,komadai,i-1,FLAG_UCHI,0,0)::Move # value = 0          
+                out[co] = Move(komaval,komadai,i-1,FLAG_UCHI,0,0)::Move # value = 0
             end
         end
     end
@@ -246,7 +246,7 @@ function in_check( s::Int, p::Board)
         banpos::Int = p.square[i+1]
         pos_koma::Int = banpos & 0x0f
 	if banpos == MJOU|(s<<4)
-	    return NewAttack( s$1, i, p)
+	    return NewAttack( s⊻1, i, p)
         end
     end
     return true  # shouldn't get here
@@ -305,7 +305,7 @@ function NewAttackSub(teban::Int,
                             return true
                         end
 	                break
-	            elseif (newkoma != MJNONE)&&(koma_teban == (teban$1))
+	            elseif (newkoma != MJNONE)&&(koma_teban == (teban⊻1))
 	                # 駒取り
 	                if nari
                             if n == pos
@@ -616,7 +616,7 @@ function generateMoves(p::Board,           #     /* IN:盤面 */
             if (val & 0x10) >>> 4 == teban
 	        fu_bit_array = fu_bit_array & UInt16(~(0x0001<<j)) # jは(9-段+1): 左から何列目か
             end
-        end                  
+        end
     end
     #println("fu_bit_array = 0x", hex(fu_bit_array))
 
@@ -782,7 +782,7 @@ function makeMoveOld(q::Board,
             q.square[from+1] = MJNONE
         end
     end
-    q.nextMove $= 1
+    q.nextMove ⊻= 1
 end
 
 # レジスタ使いすぎ。。。
@@ -823,7 +823,7 @@ function takeBackOld(q::Board,
             q.kingposB = from+1
         end
         # 駒台の駒を元のtoに戻す。
-        q.square[to+1] = removed | ((teban$1)<< 4) # 相手の駒に
+        q.square[to+1] = removed | ((teban⊻1)<< 4) # 相手の駒に
         if teban == SENTE
             q.WhitePiecesInHands[removedOmote] -= 1
             if q.WhitePiecesInHands[removedOmote] < 0
@@ -846,7 +846,7 @@ function takeBackOld(q::Board,
             q.kingposB = from+1
         end
     end
-    q.nextMove $= 1
+    q.nextMove ⊻= 1
 end
 
 function findPosition(st::String) # 0 origin
@@ -900,7 +900,7 @@ function findIndex(out::Array{Move,1},move::String,sengo::Int,
                     index = i
                     break
                 end
-            else    
+            else
                 index = i
                 break
             end

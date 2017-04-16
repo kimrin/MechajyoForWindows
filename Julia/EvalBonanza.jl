@@ -9,7 +9,7 @@ function showPcPcOnSqIndex(k::Int, i::Int, j::Int)
 end
 
 function probeEHash(p::Board, gs::GameStatus, key::UInt64)
-    #key = hash(p.square) $ hash(p.WhitePiecesInHands) $ hash(p.BlackPiecesInHands) $ hash(p.nextMove)
+    #key = hash(p.square) ⊻ hash(p.WhitePiecesInHands) ⊻ hash(p.BlackPiecesInHands) ⊻ hash(p.nextMove)
     contents = get( gs.ett, key, Int64(0xdeadcafe))
     if contents == Int64(0xdeadcafe)
         return false, 0
@@ -66,7 +66,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = f_pawn + sq - 1
         list2[n2]    = e_pawn + ((80 - sq)+2) - 1
         #println("list0[",nlist,"]=",f_pawn + sq + 1)
@@ -83,7 +83,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = e_pawn + sq - 1
         list2[n2]    = f_pawn + ((80 - sq)+2) - 1
         # println("list0[",nlist,"]=",e_pawn + sq)
@@ -106,7 +106,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = f_lance + sq - 1
         list2[n2]    = e_lance + ((80 - sq)+2) - 1
         # println("list0[",nlist,"]=",f_lance + sq)
@@ -121,7 +121,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = e_lance + sq - 1
         list2[n2]    = f_lance + ((80 - sq)+2) - 1
         score -= kkp[kkp_lance + (80 - sq)+2,sq_bk1,sq_wk1]
@@ -141,7 +141,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = f_knight + sq - 1
         list2[n2]    = e_knight + ((80 - sq)+2) - 1
         score += kkp[kkp_knight + sq,sq_bk0,sq_wk0]
@@ -155,7 +155,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = e_knight + sq - 1
         list2[n2]    = f_knight + ((80 - sq)+2) - 1
         score -= kkp[kkp_knight + (80 - sq)+2,sq_bk1,sq_wk1]
@@ -175,7 +175,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = f_silver + sq - 1
         list2[n2]    = e_silver + ((80 - sq)+2) - 1
         score += kkp[kkp_silver + sq,sq_bk0,sq_wk0]
@@ -189,7 +189,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = e_silver + sq - 1
         list2[n2]    = f_silver + ((80 - sq)+2) - 1
         score -= kkp[kkp_silver + (80 - sq)+2, sq_bk1,sq_wk1]
@@ -207,7 +207,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = f_gold + sq - 1
         list2[n2]    = e_gold + ((80 - sq)+2) - 1
         score += kkp[kkp_gold + sq,sq_bk0,sq_wk0]
@@ -219,7 +219,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = e_gold + sq - 1
         list2[n2]    = f_gold + ((80 - sq)+2) - 1
         score -= kkp[kkp_gold + (80 - sq)+2,sq_bk1,sq_wk1]
@@ -237,7 +237,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = f_bishop + sq - 1
         list2[n2]    = e_bishop + ((80 - sq)+2) - 1
         score += kkp[kkp_bishop + sq,sq_bk0,sq_wk0]
@@ -249,7 +249,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = e_bishop + sq - 1
         list2[n2]    = f_bishop + ((80 - sq)+2) - 1
         score -= kkp[kkp_bishop + (80 - sq)+2,sq_bk1,sq_wk1]
@@ -267,7 +267,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = f_horse + sq - 1
         list2[n2]    = e_horse + ((80 - sq)+2) - 1
         score += kkp[kkp_horse + sq,sq_bk0,sq_wk0]
@@ -280,7 +280,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = e_horse + sq - 1
         list2[n2]    = f_horse + ((80 - sq)+2) - 1
         score -= kkp[kkp_horse + (80 - sq)+2,sq_bk1,sq_wk1]
@@ -298,7 +298,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = f_rook + sq - 1
         list2[n2]    = e_rook + ((80 - sq)+2) - 1
         score += kkp[kkp_rook + sq,sq_bk0,sq_wk0]
@@ -310,7 +310,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = e_rook + sq - 1
         list2[n2]    = f_rook + ((80 - sq)+2) - 1
         score -= kkp[kkp_rook + (80 - sq)+2,sq_bk1,sq_wk1]
@@ -328,7 +328,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = f_dragon + sq - 1
         list2[n2]    = e_dragon + ((80 - sq)+2) - 1
         score += kkp[kkp_dragon + sq,sq_bk0,sq_wk0]
@@ -340,7 +340,7 @@ function make_list( list0::Array{Int,1}, list1::Array{Int,1}, p::Board, gs::Game
     while bb > UInt128(0)
         sq::Int = trailing_zeros(bb)+1
         # println("sq=$sq, Inv(sq)=",(80 - sq+2))
-        bb $= BitSet[sq]
+        bb ⊻= BitSet[sq]
         list0[nlist] = e_dragon + sq - 1
         list2[n2]    = f_dragon + ((80 - sq)+2) - 1
         score -= kkp[kkp_dragon + (80 - sq)+2,sq_bk1,sq_wk1]
@@ -368,7 +368,7 @@ function EvalBonanza(nextMove::Int, p::Board, gs::GameStatus)
 
     # hash lookup!
 
-    key = hash(p.square) $ hash(p.WhitePiecesInHands) $ hash(p.BlackPiecesInHands) $ hash(p.nextMove)
+    key = hash(p.square) ⊻ hash(p.WhitePiecesInHands) ⊻ hash(p.BlackPiecesInHands) ⊻ hash(p.nextMove)
 
     inHash, evalue = probeEHash(p, gs, key)
     if inHash == true

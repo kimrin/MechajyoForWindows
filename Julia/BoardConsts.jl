@@ -111,7 +111,7 @@ const I1 = 81
 # 	      G1, G2, G3, G4, G5, G6, G7, G8, G9,
 # 	      H1, H2, H3, H4, H5, H6, H7, H8, H9,
 # 	      I1, I2, I3, I4, I5, I6, I7, I8, I9]::Array{Int,1}
-              
+
 # const RL45 = [A9, B1, C2, D3, E4, F5, G6, H7, I8,
 # 	      A8, B9, C1, D2, E3, F4, G5, H6, I7,
 # 	      A7, B8, C9, D1, E2, F3, G4, H5, I6,
@@ -121,7 +121,7 @@ const I1 = 81
 # 	      A3, B4, C5, D6, E7, F8, G9, H1, I2,
 # 	      A2, B3, C4, D5, E6, F7, G8, H9, I1,
 # 	      A1, B2, C3, D4, E5, F6, G7, H8, I9]::Array{Int,1}
-  
+
 # const RR45 = [I8, I7, I6, I5, I4, I3, I2, I1, I9,
 # 	      H7, H6, H5, H4, H3, H2, H1, H9, H8,
 # 	      G6, G5, G4, G3, G2, G1, G9, G8, G7,
@@ -354,7 +354,7 @@ const MATERIAL_CAPTURE = [174,   # FU
 
 FR2IDX(file,rank) = ((9-(rank))*NumFile + ((file)))
 
-typealias BitBoard UInt128
+const BitBoard = UInt128
 
 const BOARDINDEX = [FR2IDX(f,r) for f = 1:9, r=1:9]::Array{Int,2}
 
@@ -413,4 +413,3 @@ const kkp_dragon      = 657
 const kkp_end         = 738
 
 const pos_n = Int((fe_end) * ( fe_end + 1) / 2)
-
