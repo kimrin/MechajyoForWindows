@@ -1,6 +1,6 @@
 # game status
 
-immutable TransP
+struct TransP
     hs::UInt64
     best::Move
     depth::Float64
@@ -8,7 +8,7 @@ immutable TransP
     val::Int
 end
 
-type GameStatus
+mutable struct GameStatus
     bookfile::String
     usebook::Bool
     canponder::Bool
@@ -100,4 +100,3 @@ function InitGS()
     #println("$gs")
     gs
 end
-

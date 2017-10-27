@@ -10,7 +10,7 @@ function makeMoveBroken(q::Board,
     from::Int    = seeMoveFrom(m)
     to::Int      = seeMoveTo(m)
     koma::Int    = seeMovePiece(m) & 0x0f
-    komadai::Int = (teban == SENTE) ? MO_MOVE_SENTE: MO_MOVE_GOTE
+    komadai::Int = (teban == SENTE) ? MO_MOVE_SENTE : MO_MOVE_GOTE
     komavalTo = q.square[to+1]
     # seeMoveCapt(m)
     # seeMoveFlag(m)
@@ -60,7 +60,7 @@ function makeMoveBroken(q::Board,
             q.square[to+1] = (teban << 4)|koma
             q.bb[q.square[to+1]] |= BitSet[to+1]
             komavalTo::Int = komavalTo & 0x0f
-            normalKoma = (komavalTo > MJOU) ? komavalTo - MJNARI: komavalTo
+            normalKoma = (komavalTo > MJOU) ? komavalTo - MJNARI : komavalTo
             if teban == SENTE
                 q.WhitePiecesInHands[normalKoma] += 1
                 #println("mochiW(",normalKoma,") = ", q.WhitePiecesInHands[normalKoma])
@@ -68,7 +68,7 @@ function makeMoveBroken(q::Board,
                 q.BlackPiecesInHands[normalKoma] += 1
                 #println("mochiB(",normalKoma,") = ", q.BlackPiecesInHands[normalKoma])
             end
-            q.bb[q.square[from+1]] &= ~BitSet[from+1]    
+            q.bb[q.square[from+1]] &= ~BitSet[from+1]
             q.square[from+1] = MJNONE
         end
     end
@@ -92,7 +92,7 @@ function takeBackBroken(q::Board,
     from::Int    = seeMoveFrom(m)
     to::Int      = seeMoveTo(m)
     koma::Int    = seeMovePiece(m) & 0x0f
-    komadai::Int = (teban == SENTE) ? MO_MOVE_SENTE: MO_MOVE_GOTE
+    komadai::Int = (teban == SENTE) ? MO_MOVE_SENTE : MO_MOVE_GOTE
     removed::Int = seeMoveCapt(m)
     removedOmote = (removed > MJOU) ? removed - MJNARI : removed
     flag::Int    = seeMoveFlag(m)
@@ -118,7 +118,7 @@ function takeBackBroken(q::Board,
         # その上で駒台の駒をtoに戻す
         komatmp = q.square[to+1]
         # 成っていた場合は表に戻す
-        q.square[from+1] = (nari == FLAG_NARI) ? komatmp - MJNARI: komatmp
+        q.square[from+1] = (nari == FLAG_NARI) ? komatmp - MJNARI : komatmp
         if (nari == FLAG_NARI)
             q.bb[q.square[from+1]+MJNARI] &= ~BitSet[from+1]
             q.bb[q.square[from+1]] |= BitSet[from+1]
@@ -152,7 +152,7 @@ function takeBackBroken(q::Board,
         q.square[to+1] = MJNONE
         q.bb[komatmp] &= ~BitSet[to+1]
         # 成っていた場合は表に戻す
-        q.square[from+1] = (nari == FLAG_NARI) ? komatmp - MJNARI: komatmp
+        q.square[from+1] = (nari == FLAG_NARI) ? komatmp - MJNARI : komatmp
         if (nari == FLAG_NARI)
             q.bb[q.square[from+1]+MJNARI] &= ~BitSet[from+1]
             q.bb[q.square[from+1]] |= BitSet[from+1]

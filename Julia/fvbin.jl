@@ -1,6 +1,6 @@
 fi = open("../fv.bin", "r")
-const pc_on_sq_old = read( fi, Int16, pos_n, NumSQ)
-const kkp_old = read( fi, Int16, kkp_end, NumSQ, NumSQ)
+const pc_on_sq_old = read!( fi, Array{Int16}(tuple(pos_n, NumSQ)))
+const kkp_old = read!( fi, Array{Int16}(tuple(kkp_end, NumSQ, NumSQ)))
 #println("type of pc_on_sq = ", typeof(pc_on_sq))
 #println("type of kkp = ", typeof(kkp))
 close(fi)

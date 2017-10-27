@@ -191,7 +191,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 if (to+1) < A6
                     # promotion
                     count += 1
@@ -225,7 +225,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 if (to+1) < A6
                     # promotion
                     count += 1
@@ -257,7 +257,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 if ((to+1) < A6 )||((from+1) < A6)
                     # promotion
                     count += 1
@@ -287,7 +287,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 count += 1
                 out[count] = Move(MJKI,from,to,toriflag,p.square[to+1]&0x0f,0)::Move
@@ -310,7 +310,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 count += 1
                 out[count] = Move(MJOU,from,to,toriflag,p.square[to+1]&0x0f,0)::Move
@@ -333,7 +333,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 count += 1
                 out[count] = Move(MJTO,from,to,toriflag,p.square[to+1]&0x0f,0)::Move
@@ -356,7 +356,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 count += 1
                 out[count] = Move(MJNY,from,to,toriflag,p.square[to+1]&0x0f,0)::Move
@@ -379,7 +379,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 count += 1
                 out[count] = Move(MJNK,from,to,toriflag,p.square[to+1]&0x0f,0)::Move
@@ -402,7 +402,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 count += 1
                 out[count] = Move(MJNG,from,to,toriflag,p.square[to+1]&0x0f,0)::Move
@@ -429,7 +429,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 if (to+1) >= A3
                     # promotion
                     count += 1
@@ -463,7 +463,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 if (to+1) >= A3
                     # promotion
                     count += 1
@@ -495,7 +495,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 if ((to+1) >= A3 )||((from+1) >= A3)
                     # promotion
                     count += 1
@@ -525,7 +525,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 count += 1
                 out[count] = Move(MJGOKI,from,to,toriflag,p.square[to+1]&0x0f,0)::Move
@@ -548,7 +548,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 count += 1
                 out[count] = Move(MJGOOU,from,to,toriflag,p.square[to+1]&0x0f,0)::Move
@@ -571,7 +571,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 count += 1
                 out[count] = Move(MJGOTO,from,to,toriflag,p.square[to+1]&0x0f,0)::Move
@@ -594,7 +594,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 count += 1
                 out[count] = Move(MJGONY,from,to,toriflag,p.square[to+1]&0x0f,0)::Move
@@ -617,7 +617,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 count += 1
                 out[count] = Move(MJGONK,from,to,toriflag,p.square[to+1]&0x0f,0)::Move
@@ -640,7 +640,7 @@ function genBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 count += 1
                 out[count] = Move(MJGONG,from,to,toriflag,p.square[to+1]&0x0f,0)::Move
@@ -680,7 +680,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 if (to+1) < A6
                     # promotion
                     count += 1
@@ -714,7 +714,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 if (to+1) < A6
                     # promotion
                     count += 1
@@ -746,7 +746,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 if ((to+1) < A6 )||((from+1) < A6)
                     # promotion
                     count += 1
@@ -778,7 +778,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 if toriflag == FLAG_TORI
                     count += 1
@@ -803,7 +803,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 if toriflag == FLAG_TORI
                     count += 1
@@ -828,7 +828,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 if toriflag == FLAG_TORI
                     count += 1
@@ -853,7 +853,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 if toriflag == FLAG_TORI
                     count += 1
@@ -878,7 +878,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 if toriflag == FLAG_TORI
                     count += 1
@@ -903,7 +903,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 if toriflag == FLAG_TORI
                     count += 1
@@ -932,7 +932,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 if (to+1) >= A3
                     # promotion
                     count += 1
@@ -966,7 +966,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 if (to+1) >= A3
                     # promotion
                     count += 1
@@ -998,7 +998,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 if ((to+1) >= A3 )||((from+1) >= A3)
                     # promotion
                     count += 1
@@ -1030,7 +1030,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 if toriflag == FLAG_TORI
                     count += 1
@@ -1055,7 +1055,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 if toriflag == FLAG_TORI
                     count += 1
@@ -1080,7 +1080,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 if toriflag == FLAG_TORI
                     count += 1
@@ -1105,7 +1105,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 if toriflag == FLAG_TORI
                     count += 1
@@ -1130,7 +1130,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 if toriflag == FLAG_TORI
                     count += 1
@@ -1155,7 +1155,7 @@ function genQBB(p::Board,           #     /* IN:盤面 */
                 # println("dest")
                 # DisplayBitBoard( dest, false)
                 dest ⊻= BitSet[to+1]
-                toriflag = ((toru & BitSet[to+1]) > 0)?FLAG_TORI:0
+                toriflag = ((toru & BitSet[to+1]) > 0) ? FLAG_TORI : 0
                 # normal move
                 if toriflag == FLAG_TORI
                     count += 1
@@ -1740,7 +1740,7 @@ function makeMove(q::Board,
     from::Int    = seeMoveFrom(m)
     to::Int      = seeMoveTo(m)
     koma::Int    = seeMovePiece(m) & 0x0f
-    komadai::Int = (teban == SENTE) ? MO_MOVE_SENTE: MO_MOVE_GOTE
+    komadai::Int = (teban == SENTE) ? MO_MOVE_SENTE : MO_MOVE_GOTE
     komavalTo::Int = q.square[to+1]
     captured::Int  = seeMoveCapt(m)
     flag::Int      = seeMoveFlag(m)
@@ -1784,7 +1784,7 @@ function makeMove(q::Board,
             q.bb[q.square[from+1]]  ⊻= BitSet[from+1]
             q.bb[q.square[from+1]+MJNARI] |= BitSet[to+1]
             tmpkoma = komavalTo & 0x0f
-            omote = (tmpkoma > MJOU)?tmpkoma-MJNARI:tmpkoma
+            omote = (tmpkoma > MJOU) ? tmpkoma - MJNARI : tmpkoma
             if teban == SENTE
                 q.WhitePiecesInHands[omote] += 1
             else
@@ -1801,7 +1801,7 @@ function makeMove(q::Board,
             q.bb[q.square[from+1]]  ⊻= BitSet[from+1]
             q.bb[q.square[from+1]]  |= BitSet[to+1]
             tmpkoma = komavalTo & 0x0f
-            omote = (tmpkoma > MJOU)?tmpkoma-MJNARI:tmpkoma
+            omote = (tmpkoma > MJOU) ? tmpkoma - MJNARI : tmpkoma
             if teban == SENTE
                 q.WhitePiecesInHands[omote] += 1
             else
@@ -1856,7 +1856,7 @@ function takeBack(q::Board,
     from::Int    = seeMoveFrom(m)
     to::Int      = seeMoveTo(m)
     koma::Int    = seeMovePiece(m) & 0x0f
-    komadai::Int = (teban == SENTE) ? MO_MOVE_SENTE: MO_MOVE_GOTE
+    komadai::Int = (teban == SENTE) ? MO_MOVE_SENTE : MO_MOVE_GOTE
     removed::Int = seeMoveCapt(m)
     removedOmote = (removed > MJOU) ? removed - MJNARI : removed
     flag::Int    = seeMoveFlag(m)

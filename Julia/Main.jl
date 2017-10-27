@@ -94,12 +94,15 @@ function main(stdin, sock)
     count::Int = 0
     count2::Int = 0
     gs = setupIO()
+
+    out = [Move(0,0,0,0,0,0) for n = 1:300000]
+    history = [0 for x = 1:NumSQ, y = 1:NumSQ]
     #GenMoveTest(gs)
     ###t = Task(producer)
     while true
         st = readline(stdin) #consume(t)
-        st = chomp(st)
-        #println(sock,"consumed $st")
+        # st = chomp(st)
+        # println(sock,"consumed $st")
         if st == "quit" || st == "exit"
             break
         elseif st == "usi"
@@ -124,8 +127,6 @@ function main(stdin, sock)
             end
         elseif startswith(st,"usinewgame")
             # do nothing
-            out = [Move(0,0,0,0,0,0) for n = 1:30000]
-            history = [0 for x = 1:NumSQ, y = 1:NumSQ]
         elseif startswith(st,"position startpos")
             li = split(st)
             count = 0
@@ -323,9 +324,9 @@ function parseGo(list,side)
         i = i + 1
     end
 
-    isByoyomi = (side == SENTE) ? (btime < BEGIN_BYOYOMI_IN_NS):  (wtime < BEGIN_BYOYOMI_IN_NS)
+    isByoyomi = (side == SENTE) ? (btime < BEGIN_BYOYOMI_IN_NS) : (wtime < BEGIN_BYOYOMI_IN_NS)
 
-    remainTime = (side == SENTE)? btime: wtime
+    remainTime = (side == SENTE) ? btime : wtime
 
     println("remain time = ", remainTime)
 
@@ -347,7 +348,7 @@ function parseGo(list,side)
     end
     start = time_ns() # sampling time value
     goal = start + thinkTime
-    tObj = (start,goal,isByoyomi,thinkTime)
+    tObj = (start, goal, isByoyomi, thinkTime)
     # println(tObj)
     return tObj
 end

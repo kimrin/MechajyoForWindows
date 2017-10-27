@@ -11,7 +11,7 @@ end
 
 setupIO()
 s = readline(STDIN)
-s = chomp(s)
+# s = chomp(s)
 bookfile = "./Joseki.db"
 usebook  = true
 
@@ -22,9 +22,9 @@ if s == "usi"
     println("option name UseBook type check default $(usebook)")
     println("usiok");
     s2 = readline(STDIN)
-    s2 = chomp(s2)
+    # s2 = chomp(s2)
     while s != "quit"
       s2 = readline(STDIN)
-      s2 = chomp(s2)
+    # s2 = chomp(s2)
     end
 end

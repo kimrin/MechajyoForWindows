@@ -1,5 +1,5 @@
 #       Following 2 lines of code is an MVV/LVA scheme:
-#	val = 128 * PIECEVALUES[capt.getCapt()] + PIECEVALUES[capt.getPiec()]; 
+#	val = 128 * PIECEVALUES[capt.getCapt()] + PIECEVALUES[capt.getPiec()];
 #	if (capt.isPromotion()) val += 512 * PIECEVALUES[capt.getProm()];
 
 function MVVLVA(c_koma::Int, flag::Int, piece::Int)
@@ -9,8 +9,8 @@ function MVVLVA(c_koma::Int, flag::Int, piece::Int)
     capt::Int = c_koma & 0x0f
     piece2::Int = piece & 0x0f
 
-    matCapt::Int = (capt == MJNONE)?0:MATERIAL[capt]
-    matPiece::Int = (piece2 == MJNONE)?0:MATERIAL[piece2]
+    matCapt::Int = (capt == MJNONE) ? 0 : MATERIAL[capt]
+    matPiece::Int = (piece2 == MJNONE) ? 0 : MATERIAL[piece2]
 
     v = 128 * matCapt + matPiece
     if (flag & FLAG_NARI) == FLAG_NARI
@@ -20,9 +20,9 @@ function MVVLVA(c_koma::Int, flag::Int, piece::Int)
     return v
 end
 
-# 早速immutable構文を使ってみるなど(^_^;)
+# 早速struct構文を使ってみるなど(^_^;)
 
-immutable Move
+struct Move
     move::UInt
     value::Int
     Move(Piece::Int,From::Int,To::Int,Flags::Int,Capt::Int,value::Int) = new(((From&0x000000ff)<<24)|((To&0x000000ff)<<16)|((Capt&0x0000000f)<<12)|((Flags&0x00000007)<<8)|(Piece&0x0000001f),MVVLVA(Capt,Flags,Piece))
@@ -39,4 +39,3 @@ const FLAG_TORI = Int(0x2) # 駒を取ったときに可能手にフラグを立
 const FLAG_UCHI = Int(0x4) # 駒を打ったときに可能手にフラグを立てる
 
 # あとは必要に応じて関数を追加する。先手か後手かなど
-

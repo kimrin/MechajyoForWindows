@@ -6,11 +6,11 @@ const TT_ALPHA = 2
 const TT_BETA  = 3
 const TT_INVALID = -1
 
-immutable TTKEY
+struct TTKEY
     square::Array{Int,1} # incrementally updated, this array is usefull if we want to
     WhitePiecesInHands::Array{Int,1}
     BlackPiecesInHands::Array{Int,1}
-    nextMove::Int # SENTE or GOTE    
+    nextMove::Int # SENTE or GOTE
 end
 
 function tt_probe(depth::Float64, alpha::Int, beta::Int, gs::GameStatus)
@@ -19,7 +19,7 @@ function tt_probe(depth::Float64, alpha::Int, beta::Int, gs::GameStatus)
     key = TTKEY(gs.board.square, gs.board.WhitePiecesInHands, gs.board.BlackPiecesInHands, gs.board.nextMove)
     contents = get( gs.tt, hash(key), -1)
     fl::Int = TT_INVALID
-    
+
     if contents != -1
         # match!
         best = contents.best
@@ -59,8 +59,8 @@ function qsearch( gs::GameStatus, ply::Int, alpha::Int, beta::Int)
     # quiescence search
     val::Int = 0
     val2::Int = 0
-    teban::Int = ((ply & 0x1) == 0)?gs.side:(gs.side$1)
-    ev = (teban == SENTE)? 1: -1
+    teban::Int = ((ply & 0x1) == 0) ? gs.side : (gs.side$1)
+    ev = (teban == SENTE) ? 1 : -1
     bestValue = -Infinity
 
     if gs.timedout
@@ -163,7 +163,7 @@ function selectmove( gs::GameStatus, ply::Int, i::Int, depth::Float64)
             end
         end
     end
-    
+
     if gs.board.nextMove == GOTE
 	best = gs.blackHeuristics[seeMoveFrom(gs.moveBuf[i])+1,seeMoveTo(gs.moveBuf[i])+1]
 	j = i
@@ -200,13 +200,13 @@ function PVS( gs::GameStatus, ply::Int, depth::Float64, alpha::Int, beta::Int, i
     movesfound::Int = 0
     gs.pvmovesfound = 0
     bestValue = -Infinity
-    teban::Int = ((ply & 0x1) == 0)?gs.side:gs.side$1
+    teban::Int = ((ply & 0x1) == 0) ? gs.side : gs.side $ 1
     val::Int = 0
     tt_flag::Int = TT_ALPHA
     tt_val::Int = 0
     tt_bestMove = Move(0,0,0,0,0,0)
     gs.triangularLength[ply+1] = ply
-    if (depth <= 0.0) 
+    if (depth <= 0.0)
 	gs.followpv = false
         va::Int = qsearch(gs, ply, alpha, beta)
 	return va
@@ -234,7 +234,7 @@ function PVS( gs::GameStatus, ply::Int, depth::Float64, alpha::Int, beta::Int, i
     #     beta = min(beta,val)
     #     return beta
     # end
-    
+
     if (!gs.followpv) && gs.allownull
         if true
             if in_check( teban, gs.board)
@@ -270,7 +270,7 @@ function PVS( gs::GameStatus, ply::Int, depth::Float64, alpha::Int, beta::Int, i
             return val
         end
     end
-    ev = (teban == SENTE)? 1: -1
+    ev = (teban == SENTE) ? 1 : -1
     tmpeval = ev * EvalBonanza( SENTE, gs.board, gs)
 
     if (!gs.followpv) && gs.allownull && depth < 3.0 && ((tmpeval - 100.0 * depth) >= beta)
@@ -326,7 +326,7 @@ function PVS( gs::GameStatus, ply::Int, depth::Float64, alpha::Int, beta::Int, i
                 end
                 gs.triangularLength[ply+1] = gs.triangularLength[ply + 1+1]
                 rememberPV(gs)
-                
+
                 tt_flag = TT_ALPHA
                 tt_val = alpha
                 tt_bestMove = gs.moveBuf[i]
@@ -340,7 +340,7 @@ function PVS( gs::GameStatus, ply::Int, depth::Float64, alpha::Int, beta::Int, i
                 else
                     gs.whiteHeuristics[seeMoveFrom(gs.moveBuf[i])+1,seeMoveTo(gs.moveBuf[i])+1] += Int(depth*depth)
                 end
-                    
+
                 tt_flag = TT_BETA
                 tt_val = beta
                 tt_bestMove = gs.moveBuf[i]

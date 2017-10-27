@@ -167,7 +167,7 @@ function recycleMove(fu_bit_array::UInt,
     # 基本、盤面情報を元に「打ち」となる可能手を生成すればよい
     # 香車、桂馬の場合は手番ごと禁じ手となる盤面の隅への着手をチェックする
     # 歩の場合は盤面のハジへの着手とともに、２歩のチェックを行う
-    komadai::Int = (teban == SENTE) ? MO_MOVE_SENTE: MO_MOVE_GOTE
+    komadai::Int = (teban == SENTE) ? MO_MOVE_SENTE : MO_MOVE_GOTE
     from::Int = 0
     to::Int   = 0
     i::Int    = 0
@@ -281,7 +281,7 @@ function NewAttackSub(teban::Int,
     from_koma::Int    = banfrom & 0x0f              # 動かす駒の種類
     num_of_moves::Int = koma_num_of_moves[from_koma]# 駒の動かせる方向数
     enable_s::Int     = EnableSlide[from_koma]      # slide pieceか否か
-    teban_flag        = (teban == SENTE) ? 1: -1    # 先手なら１、後手ならー１
+    teban_flag        = (teban == SENTE) ? 1 : -1    # 先手なら１、後手ならー１
     nari::Bool        = false                       # 成りフラグ
     canMove::Bool     = false                       # 動かすことが可能なら1
     koma_teban::Int   = 0                           # 駒（移動先）の手番
@@ -363,9 +363,9 @@ end
 #     for x = 0:(NumSQ-1)
 #         banpos::Int       = p.square[x+1]             # 動かす駒
 #         pos_koma::Int     = banpos & 0x0f               # 動かす駒の種類
-#         num_of_moves::Int = (pos_koma == 0)?0:koma_num_of_moves[pos_koma] # 駒の動かせる方向数
-#         enable_s::Int     = (pos_koma == 0)?0:EnableSlide[pos_koma]       # slide pieceか否か
-#         teban_flag        = (teban == SENTE) ? 1: -1    # 先手なら１、後手ならー１
+#         num_of_moves::Int = (pos_koma == 0) ? 0 : koma_num_of_moves[pos_koma] # 駒の動かせる方向数
+#         enable_s::Int     = (pos_koma == 0) ? 0 : EnableSlide[pos_koma]       # slide pieceか否か
+#         teban_flag        = (teban == SENTE) ? 1 : -1    # 先手なら１、後手ならー１
 #         while true # UM,RY用のループ
 #             for i = 1:num_of_moves
 #                 n = x
@@ -381,7 +381,7 @@ end
 
 # 	                if (newkoma != MJNONE) && (koma_teban == teban)
 # 	                    break
-# 	                elseif (newkoma != MJNONE)&&(koma_teban == ((teban==SENTE)?GOTE:SENTE))
+# 	                elseif (newkoma != MJNONE)&&(koma_teban == ((teban==SENTE) ? GOTE : SENTE ))
 #                             # 取り
 # 	                    if nari
 #                                 if n == pos
@@ -442,7 +442,7 @@ function mailbox0x88(teban::Int,
     pos_koma::Int     = banpos & 0x0f               # 動かす駒の種類
     num_of_moves::Int = koma_num_of_moves[pos_koma] # 駒の動かせる方向数
     enable_s::Int     = EnableSlide[pos_koma]       # slide pieceか否か
-    teban_flag        = (teban == SENTE) ? 1: -1    # 先手なら１、後手ならー１
+    teban_flag        = (teban == SENTE) ? 1 : -1    # 先手なら１、後手ならー１
     nari::Bool        = false                       # 成りフラグ
     canMove::Bool     = false                       # 動かすことが可能なら1
     value::Int        = 0                           # 可能手の値
@@ -468,7 +468,7 @@ function mailbox0x88(teban::Int,
 	            koma_teban = (newkoma & 0x10) >>> 4;
 	            if (newkoma != MJNONE) && (koma_teban == teban)
 	                break
-	            elseif (newkoma != MJNONE)&&(koma_teban == ((teban==SENTE)?GOTE:SENTE))
+	            elseif (newkoma != MJNONE)&&(koma_teban == ((teban==SENTE) ? GOTE : SENTE))
 	                # 駒取り
 	                if nari
 	                    count += 1
@@ -525,7 +525,7 @@ function mailboxQ0x88(teban::Int,
     pos_koma::Int     = banpos & 0x0f               # 動かす駒の種類
     num_of_moves::Int = koma_num_of_moves[pos_koma] # 駒の動かせる方向数
     enable_s::Int     = EnableSlide[pos_koma]       # slide pieceか否か
-    teban_flag        = (teban == SENTE) ? 1: -1    # 先手なら１、後手ならー１
+    teban_flag        = (teban == SENTE) ? 1 : -1   # 先手なら１、後手ならー１
     nari::Bool        = false                       # 成りフラグ
     canMove::Bool     = false                       # 動かすことが可能なら1
     value::Int        = 0                           # 可能手の値
@@ -551,7 +551,7 @@ function mailboxQ0x88(teban::Int,
 	            koma_teban = (newkoma & 0x10) >>> 4;
 	            if (newkoma != MJNONE) && (koma_teban == teban)
 	                break
-	            elseif (newkoma != MJNONE)&&(koma_teban == ((teban==SENTE)?GOTE:SENTE))
+	            elseif (newkoma != MJNONE)&&(koma_teban == ((teban==SENTE) ? GOTE : SENTE))
 	                # 駒取り
 	                if nari
 	                    count += 1
@@ -634,8 +634,8 @@ function generateMoves(p::Board,           #     /* IN:盤面 */
     # 打つ手を生成する
     # k = &(p->ban[0]);
     ##println("uchu!(count = ", count, ")")
-    # MW_u08t fromIdx = (teban == SENTE) ? MO_HI_SENTE: MO_HI_GOTE;
-    # MW_u08t toIdx = (teban == SENTE) ? MO_SENTE_OFFSET: MO_GOTE_OFFSET;
+    # MW_u08t fromIdx = (teban == SENTE) ? MO_HI_SENTE : MO_HI_GOTE;
+    # MW_u08t toIdx = (teban == SENTE) ? MO_SENTE_OFFSET : MO_GOTE_OFFSET;
     fromIdx::Int = MJHI
     toIdx::Int =   MJFU
     for j = fromIdx:-1:toIdx
@@ -652,7 +652,7 @@ function generateMoves(p::Board,           #     /* IN:盤面 */
             end
         end
     end
-    #println("return value of generate move = ", count)
+    # println("return value of generate move = ", count)
     count # 可能手の通算の数を返す
 end
 #end # @iprofile begin
@@ -734,7 +734,7 @@ function makeMoveOld(q::Board,
     from::Int    = seeMoveFrom(m)
     to::Int      = seeMoveTo(m)
     koma::Int    = seeMovePiece(m) & 0x0f
-    komadai::Int = (teban == SENTE) ? MO_MOVE_SENTE: MO_MOVE_GOTE
+    komadai::Int = (teban == SENTE) ? MO_MOVE_SENTE : MO_MOVE_GOTE
     komavalTo = q.square[to+1]
     # seeMoveCapt(m)
     # seeMoveFlag(m)
@@ -771,7 +771,7 @@ function makeMoveOld(q::Board,
         else
             q.square[to+1] = (teban << 4)|koma
             komavalTo::Int = komavalTo & 0x0f
-            normalKoma = (komavalTo > MJOU) ? komavalTo - MJNARI: komavalTo
+            normalKoma = (komavalTo > MJOU) ? komavalTo - MJNARI : komavalTo
             if teban == SENTE
                 q.WhitePiecesInHands[normalKoma] += 1
                 #println("mochiW(",normalKoma,") = ", q.WhitePiecesInHands[normalKoma])
@@ -794,7 +794,7 @@ function takeBackOld(q::Board,
     from::Int    = seeMoveFrom(m)
     to::Int      = seeMoveTo(m)
     koma::Int    = seeMovePiece(m) & 0x0f
-    komadai::Int = (teban == SENTE) ? MO_MOVE_SENTE: MO_MOVE_GOTE
+    komadai::Int = (teban == SENTE) ? MO_MOVE_SENTE : MO_MOVE_GOTE
     removed::Int = seeMoveCapt(m)
     removedOmote = (removed > MJOU) ? removed - MJNARI : removed
     flag::Int    = seeMoveFlag(m)
@@ -816,7 +816,7 @@ function takeBackOld(q::Board,
         # その上で駒台の駒をtoに戻す
         komatmp = q.square[to+1]
         # 成っていた場合は表に戻す
-        q.square[from+1] = (nari == FLAG_NARI) ? komatmp - MJNARI: komatmp
+        q.square[from+1] = (nari == FLAG_NARI) ? komatmp - MJNARI : komatmp
         if q.square[from+1] == MJOU
             q.kingposW = from+1
         elseif q.square[from+1] == MJGOOU
@@ -839,7 +839,7 @@ function takeBackOld(q::Board,
         komatmp = q.square[to+1]
         q.square[to+1] = MJNONE
         # 成っていた場合は表に戻す
-        q.square[from+1] = (nari == FLAG_NARI) ? komatmp - MJNARI: komatmp
+        q.square[from+1] = (nari == FLAG_NARI) ? komatmp - MJNARI : komatmp
         if q.square[from+1] == MJOU
             q.kingposW = from+1
         elseif q.square[from+1] == MJGOOU
@@ -974,7 +974,7 @@ function GenMoveTest(gs::GameStatus)
         num = generateMoves(board2,#board,
 	                    out,                    #     /* IN/OUT: 可能手を格納する配列*/
 	                    SENTE, #board.nextMove,         #     /* 可能手を生成する手番 */
-	                    #(board2.nextMove == SENTE)? GOTE:SENTE, #board.nextMove,         #     /* 可能手を生成する手番 */
+	                    #(board2.nextMove == SENTE) ? GOTE : SENTE, #board.nextMove,         #     /* 可能手を生成する手番 */
                             0,
 	                    gs)
     end

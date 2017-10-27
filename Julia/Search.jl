@@ -22,8 +22,8 @@ function Qui( gs::GameStatus, ply::Int, alpha::Int, beta::Int)
     movesfound::Int = 0
     gs.pvmovesfound = 0
     gs.triangularLength[ply+1] = ply
-    teban::Int = ((ply & 0x1) == 0)?gs.side:((gs.side==SENTE)?GOTE:SENTE)
-    ev = (teban == SENTE) ? 1: -1
+    teban::Int = ((ply & 0x1) == 0) ? gs.side : ((gs.side == SENTE) ? GOTE : SENTE)
+    ev = (teban == SENTE) ? 1 : -1
     bestValue = -Infinity
 
     if (gs.inodes) & 1023 == 0
@@ -97,7 +97,7 @@ function AlphaBeta( gs::GameStatus, ply::Int, depth::Float64, alpha::Int, beta::
     movesfound::Int = 0
     gs.pvmovesfound = 0
     gs.triangularLength[ply+1] = ply
-    teban::Int = ((ply & 0x1) == 0)?gs.side:((gs.side==SENTE)?GOTE:SENTE)
+    teban::Int = ((ply & 0x1) == 0) ? gs.side : ((gs.side == SENTE) ? GOTE : SENTE)
     bestValue = -Infinity
     tt_flag::Int = TT_ALPHA
     tt_val::Int = 0
@@ -160,7 +160,7 @@ function AlphaBeta( gs::GameStatus, ply::Int, depth::Float64, alpha::Int, beta::
     #         return val
     #     end
     # end
-    ev = (teban == SENTE)? 1: -1
+    ev = (teban == SENTE) ? 1 : -1
     # tmpeval = ev * EvalBonanza( SENTE, gs.board, gs)
 
     #if (!gs.followpv) && gs.allownull && depth < 3.0 && ((tmpeval - 100.0 * depth) >= beta)
@@ -363,7 +363,7 @@ function thinkASP( sengo::Int, gs::GameStatus, sock)
             rememberPV(gs)
             timeInMSecs::Int = Int(div((time_ns() - gs.nsStart),1000000))
             frac = div((time_ns() - gs.nsStart),1000000000)
-            NPS::Int = Int(div(gs.inodes,(frac == 0)?1:frac))
+            NPS::Int = Int(div(gs.inodes,(frac == 0) ? 1 : frac ))
             ## info time 203 nodes 11111111 score cp 11168 pv 5e9i+ ....
             print(sock,"info time ",timeInMSecs," depth ", Int(IDdepth), " nodes ", gs.inodes, " score cp ", score, " nps ",NPS," pv")
             for i = 1:gs.triangularLength[1]

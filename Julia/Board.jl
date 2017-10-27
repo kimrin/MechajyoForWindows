@@ -1,4 +1,4 @@
-type Board
+mutable struct Board
     bb::Array{BitBoard,1} # bb[MJKI] のように使う
     WhitePieces::BitBoard
     BlackPieces::BitBoard
@@ -37,7 +37,7 @@ function DisplayBitBoard(bb::BitBoard,isRotate::Bool)
     boardc = Array(String,NumSQ)
 
     for sq = 1:NumSQ
-        boardc[sq] = ((bb & BitSet[sq]) != UInt128(0)) ? "1": "."
+        boardc[sq] = ((bb & BitSet[sq]) != UInt128(0)) ? "1" : "."
     end
 
     println("as binary integer:")
@@ -272,55 +272,55 @@ function InitSFEN(sfen::String, bo::Board)
                 numberOfMochi = Int(s - '0')
             end
         elseif s == 'P'
-            mo_sente[MJFU] = numberOfMochi == 0 ? 1: numberOfMochi
+            mo_sente[MJFU] = numberOfMochi == 0 ? 1 : numberOfMochi
             numberOfMochi = 0
         elseif s == 'L'
-            mo_sente[MJKY] = numberOfMochi == 0 ? 1: numberOfMochi
+            mo_sente[MJKY] = numberOfMochi == 0 ? 1 : numberOfMochi
             numberOfMochi = 0
         elseif s == 'N'
-            mo_sente[MJKE] = numberOfMochi == 0 ? 1: numberOfMochi
+            mo_sente[MJKE] = numberOfMochi == 0 ? 1 : numberOfMochi
             numberOfMochi = 0
         elseif s == 'S'
-            mo_sente[MJGI] = numberOfMochi == 0 ? 1: numberOfMochi
+            mo_sente[MJGI] = numberOfMochi == 0 ? 1 : numberOfMochi
             numberOfMochi = 0
         elseif s == 'G'
-            mo_sente[MJKI] = numberOfMochi == 0 ? 1: numberOfMochi
+            mo_sente[MJKI] = numberOfMochi == 0 ? 1 : numberOfMochi
             numberOfMochi = 0
         elseif s == 'B'
-            mo_sente[MJKA] = numberOfMochi == 0 ? 1: numberOfMochi
+            mo_sente[MJKA] = numberOfMochi == 0 ? 1 : numberOfMochi
             numberOfMochi = 0
         elseif s == 'R'
-            mo_sente[MJHI] = numberOfMochi == 0 ? 1: numberOfMochi
+            mo_sente[MJHI] = numberOfMochi == 0 ? 1 : numberOfMochi
             numberOfMochi = 0
         elseif s == 'K' # 普通はない
-            mo_sente[MJOU] = numberOfMochi == 0 ? 1: numberOfMochi
+            mo_sente[MJOU] = numberOfMochi == 0 ? 1 : numberOfMochi
             numberOfMochi = 0
 
             # ここから後手
 
         elseif s == 'p'
-            mo_gote[MJFU] = numberOfMochi == 0 ? 1: numberOfMochi
+            mo_gote[MJFU] = numberOfMochi == 0 ? 1 : numberOfMochi
             numberOfMochi = 0
         elseif s == 'l'
-            mo_gote[MJKY] = numberOfMochi == 0 ? 1: numberOfMochi
+            mo_gote[MJKY] = numberOfMochi == 0 ? 1 : numberOfMochi
             numberOfMochi = 0
         elseif s == 'n'
-            mo_gote[MJKE] = numberOfMochi == 0 ? 1: numberOfMochi
+            mo_gote[MJKE] = numberOfMochi == 0 ? 1 : numberOfMochi
             numberOfMochi = 0
         elseif s == 's'
-            mo_gote[MJGI] = numberOfMochi == 0 ? 1: numberOfMochi
+            mo_gote[MJGI] = numberOfMochi == 0 ? 1 : numberOfMochi
             numberOfMochi = 0
         elseif s == 'g'
-            mo_gote[MJKI] = numberOfMochi == 0 ? 1: numberOfMochi
+            mo_gote[MJKI] = numberOfMochi == 0 ? 1 : numberOfMochi
             numberOfMochi = 0
         elseif s == 'b'
-            mo_gote[MJKA] = numberOfMochi == 0 ? 1: numberOfMochi
+            mo_gote[MJKA] = numberOfMochi == 0 ? 1 : numberOfMochi
             numberOfMochi = 0
         elseif s == 'r'
-            mo_gote[MJHI] = numberOfMochi == 0 ? 1: numberOfMochi
+            mo_gote[MJHI] = numberOfMochi == 0 ? 1 : numberOfMochi
             numberOfMochi = 0
         elseif s == 'k' # 普通はない
-            mo_gote[MJOU] = numberOfMochi == 0 ? 1: numberOfMochi
+            mo_gote[MJOU] = numberOfMochi == 0 ? 1 : numberOfMochi
             numberOfMochi = 0
         end
     end
